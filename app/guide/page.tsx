@@ -6,11 +6,11 @@ const AccordionBox = ({noticeTitle,notices,noticeIndex,onMenuClick,showAcoordion
         <div>
             <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(noticeIndex)}>
             <button
-                className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
-                type="button" data-te-collapse-init data-te-target="#flush-collapseOne" aria-expanded="false"
-                aria-controls="flush-collapseOne">
+                className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold"
+                type="button" >
                 {noticeTitle}
             </button>
+            <hr />
             </h2>
             {
                 showAcoordion &&
@@ -60,7 +60,7 @@ export default function Guide() {
                     <div>
                         <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(1)}>
                         <button
-                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold "
                             type="button" data-te-collapse-init data-te-target="#flush-collapseOne" aria-expanded="false"
                             aria-controls="flush-collapseOne">
                             오시는 길
@@ -90,7 +90,7 @@ export default function Guide() {
                     <div>
                         <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(2)}>
                         <button
-                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold "
                             type="button" data-te-collapse-init data-te-target="#flush-collapseOne" aria-expanded="false"
                             aria-controls="flush-collapseOne">
                             무료조식
@@ -108,7 +108,7 @@ export default function Guide() {
                     <div>
                         <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(3)}>
                         <button
-                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
+                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold "
                             type="button" data-te-collapse-init data-te-target="#flush-collapseOne" aria-expanded="false"
                             aria-controls="flush-collapseOne">
                             보일러
@@ -125,9 +125,8 @@ export default function Guide() {
                     <div>
                         <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(4)}>
                         <button
-                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:text-primary-400"
-                            type="button" data-te-collapse-init data-te-target="#flush-collapseOne" aria-expanded="false"
-                            aria-controls="flush-collapseOne">
+                            className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold "
+                            type="button" aria-expanded="false">
                             편의용품
                         </button>
                         </h2>
