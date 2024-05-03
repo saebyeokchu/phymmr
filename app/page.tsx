@@ -1,113 +1,115 @@
 import Image from "next/image";
+import Header from "./_root/header";
+import MainMMRImage from "../public/room1-1.jpg"
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
+    <div className="bg-white">
+      <div className="mx-auto flex flex-col max-w-7xl p-6 space-y-6 lg:px-8">
+        <div className="mx-auto flex flex-col items-center justify-items-center font-semibold text-lg inline-block mb-16 mt-16">
+          <a href="/guide"
+            className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+            포항역 머무름 쉐어하우스 사용방법 바로 보러가기
           </a>
+          <div className="text-2xl cursor-pointer  hover:text-indigo-600 transition duration-500 ease-in-out" aria-hidden="true"><a href="/guide">&rarr;</a></div>
+        </div>
+        <div className="mx-auto flex flex-col items-center justify-items-center font-semibold text-lg mb-16 mt-16 border p-10 border-gray-800">
+          <a href="/inquiry"
+            className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+            단기숙박 / 장기숙박 문의하기
+          </a>
+          <div className="text-2xl cursor-pointer  hover:text-indigo-600 transition duration-500 ease-in-out" aria-hidden="true"><a href="/inquiry">&rarr;</a></div>
+        </div>
+        <div>
+        <div className="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
+          <div className="rounded overflow-hidden flex flex-col max-w-xl mx-auto">
+
+              <a href="#">
+                  <img className="w-full" src="https://phymmr.s3.us-east-2.amazonaws.com/room1-1.jpg" alt="Sunset in the mountains" />
+              </a>
+              <div className="relative -mt-16 px-10 pt-5 pb-16 bg-white m-10">
+                  <a href="#"
+                      className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+                      포항역 머무름 쉐어하우스 </a>
+                  <p className="text-gray-500 text-sm">
+                      포항역 머무름 쉐어하우스는 여행을 시작하기전, 여행에서 돌아가기전, 고요한 휴식이 필요할 때
+                      잠시 머무르고 가실 수 있도록 평온한 머무름을 제공합니다.
+                  </p>
+                  <p className="mt-5 text-gray-600 text-xs">
+                      By
+                      <a href="#" className="text-xs text-indigo-600 transition duration-500 ease-in-out">
+                        Saebyeok
+                      </a> 
+                  </p>
+              </div>
+
+          </div>
+        </div>
+        </div>
+        <div className="flex flex-row ">
+          <div className="basis-1/2"> <img src="https://phymmr.s3.us-east-2.amazonaws.com/livingroom.jpg" /> </div>
+          <div className="basis-1/2 text-lg text-gray-700 text-right"> 
+            <span className="font-semibold">포항역 머무름 쉐어하우스 거실</span>
+          </div>
+        </div>
+        <div className="flex flex-row ">
+          <div className="basis-1/2 text-lg text-gray-700 text-left"> 
+            <span className="font-semibold">바로 조리가능한 주방</span>
+          </div>
+          <div className="basis-1/2"> <img src="https://phymmr.s3.us-east-2.amazonaws.com/kitchen.jpg" /> </div>
+
+        </div>
+        <div>
+          <div className="rounded overflow-hidden flex flex-col max-w-xl mx-auto pt-20">
+            <a href="#">
+                <img className="w-full" src="https://phymmr.s3.us-east-2.amazonaws.com/romm1-2.jpg" alt="Sunset in the mountains" />
+            </a>
+            <div className="relative -mt-16 px-10 pt-5 pb-16 bg-white m-10">
+                <a href="#"
+                    className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+                    1번방 </a>
+                <p className="text-gray-500 text-sm">
+                    1번방은 넓은 공간으로 퀸사이즈 침대가 편안한 휴식을 제공합니다. 창밖으로 보이는 시원한 풍경이 매력적입니다
+                </p>
+                <p className="mt-5 text-gray-600 text-xs">
+                      <a href="#" className="text-xs text-indigo-600 transition duration-500 ease-in-out">
+                        더 자세히보기
+                      </a> 
+                      <br />
+                      <a href="#" className="text-xs text-indigo-600 transition duration-500 ease-in-out">
+                        하우스투어 예약하기
+                      </a> 
+                  </p>
+            </div>
+
+            </div>
+        </div>
+        <div>
+          <div className="rounded overflow-hidden flex flex-col max-w-xl mx-auto">
+            <a href="#">
+                <img className="w-full" src="https://phymmr.s3.us-east-2.amazonaws.com/room2-1.jpg" alt="Sunset in the mountains" />
+            </a>
+            <div className="relative -mt-16 px-10 pt-5 pb-16 bg-white m-10">
+                <a href="#"
+                    className="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out inline-block mb-2">
+                    2번방 </a>
+                <p className="text-gray-500 text-sm">
+                    2번방은 1인실로 저렴하게 머물러 갈 수 있습니다. 침대, 수납장, 옷장, 책상으로 작지만 알찬 가구가 구비되어 있습니다.
+                </p>
+                <p className="mt-5 text-gray-600 text-xs">
+                      <a href="#" className="text-xs text-indigo-600 transition duration-500 ease-in-out">
+                        더 자세히보기
+                      </a> 
+                      <br />
+                      <a href="#" className="text-xs text-indigo-600 transition duration-500 ease-in-out">
+                        하우스투어 예약하기
+                      </a> 
+                  </p>
+            </div>
+
+            </div>
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
