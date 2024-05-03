@@ -1,6 +1,6 @@
 export default function Inquiry() {
     return (
-        <div className="container my-24 mx-auto md:px-6">
+        <div className="bg-white container my-24 mx-auto md:px-6">
             <section className="mb-32 text-center">
                 <h2 className="mb-12 text-3xl font-bold">하우스투어 신청하기</h2>
                 <a href="http://pf.kakao.com/_bQMkG">
