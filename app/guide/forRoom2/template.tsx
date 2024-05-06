@@ -5,7 +5,8 @@ type AccordionBox = {
     noticeTitle : string,
     notices : string[], 
     noticeIndex : number, 
-    imageSrc? : string
+    imageSrc? : string,
+    video? : boolean
 }
 
 export default function ForRoom2() {
@@ -22,7 +23,7 @@ export default function ForRoom2() {
         setShowMenu({...showMenu})
     }
 
-    const AccordionBox = ({noticeTitle,notices,noticeIndex,imageSrc} : AccordionBox ) =>
+    const AccordionBox = ({noticeTitle,notices,noticeIndex,imageSrc,video} : AccordionBox ) =>
         <div>
             <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(noticeIndex)}>
             <button
@@ -41,6 +42,10 @@ export default function ForRoom2() {
                         }
                     </ul>
                     { imageSrc && <img src={`https://phymmr.s3.us-east-2.amazonaws.com/${imageSrc}`} /> }
+                    { video && <video width="400" controls autoPlay>
+                            <source src={`https://phymmr.s3.us-east-2.amazonaws.com/turn_on_hotwater.MOV`} type="video/mp4" />
+                        </video>
+                    }
                 </div>
             }
         </div>
@@ -54,6 +59,7 @@ export default function ForRoom2() {
                 ]}
                 noticeIndex= {0}
                 imageSrc={undefined}
+                video={true}
             />
             <AccordionBox
                 noticeTitle = "세탁서비스"
