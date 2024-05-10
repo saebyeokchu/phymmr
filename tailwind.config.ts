@@ -1,6 +1,8 @@
 import type { Config } from "tailwindcss";
+import color from 'tailwindcss/colors';
 
 const config: Config = {
+  mode: 'jit',
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -13,8 +15,16 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      backgroundSize: {
+        'size-200': '200% 200%',
+      },
+      backgroundPosition: {
+        'pos-0': '0% 0%',
+        'pos-100': '100% 100%',
+      }
     },
   },
   plugins: [],
 };
 export default config;
+

@@ -33,11 +33,11 @@ export default function Guide() {
                 <section className="mb-32">
                     <h2 className="mb-6 pl-6 text-3xl font-bold">포항역 머무름 사용설명서</h2>
                     {/* sm:justify-normal sm:flex-col  */}
-                    <div className="flex flex-wrap md:flex md:justify-start space-x-0.5 space-y-0.5 ml-5">
-                        <div><button className={`g-blue-500 ${ reservationType === "forEveryOne" ? "bg-purple-900" : "bg-purple-600" } text-white font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base`} onClick={()=>adjustBelowList("forEveryOne")}> 공통 안내 사항 </button></div>
-                        <div><button className={`g-blue-500 ${ reservationType === "forEntireApt" ? "bg-purple-900" : "bg-purple-600" } text-white font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base`} onClick={()=>adjustBelowList("forEntireApt")}> 머무름 전체 예약 </button></div>
-                        <div><button className={`g-blue-500 ${ reservationType === "forRoom1" ? "bg-purple-900" : "bg-purple-600" } text-white font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base`} onClick={()=>adjustBelowList("forRoom1")}> 1번방 예약 </button></div>
-                        <div><button className={`g-blue-500 ${ reservationType === "forRoom2" ? "bg-purple-900" : "bg-purple-600" } text-white font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base`} onClick={()=>adjustBelowList("forRoom2")}>2번방 예약</button></div>
+                    <div className="flex flex-wrap md:flex md:justify-start space-x-0.5 ml-5">
+                        <div><button className={`g-blue-500 ${ reservationType === "forEveryOne" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forEveryOne")}> 공통 안내 사항 </button></div>
+                        <div><button className={`g-blue-500 ${ reservationType === "forEntireApt" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forEntireApt")}> 머무름 전체 예약 </button></div>
+                        <div><button className={`g-blue-500 ${ reservationType === "forRoom1" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forRoom1")}> 1번방 예약 </button></div>
+                        <div><button className={`g-blue-500 ${ reservationType === "forRoom2" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-purple-900 text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forRoom2")}>2번방 예약</button></div>
                     </div>
                     <div className='mt-4'>
                         { reservationType === "forEveryOne"  && <ForEveryone />}
