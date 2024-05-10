@@ -43,7 +43,7 @@ export default function ForRoom2() {
                     </ul>
                     { imageSrc && <img src={`https://phymmr.s3.us-east-2.amazonaws.com/${imageSrc}`} /> }
                     { video && <video width="400" controls autoPlay>
-                            <source src={`https://phymmr.s3.us-east-2.amazonaws.com/turn_on_hotwater.MOV`} type="video/mp4" />
+                            <source src={`https://phymmr.s3.us-east-2.amazonaws.com/turn_on_hotwater.mp4`} type="video/mp4" />
                         </video>
                     }
                 </div>
@@ -55,7 +55,8 @@ export default function ForRoom2() {
             <AccordionBox
                 noticeTitle = "보일러"
                 notices= {[
-                    "에어비앤비 특징상 1번방에 보일러 온도 조절기가 위치하고 있습니다. 2번방 게스트분께서는 호실에 비치된 아이패드를 이용해 보일러를 조절하실 수 있습니다."
+                    "에어비앤비 특징상 1번방에 보일러 온도 조절기가 위치하고 있습니다. 2번방 게스트분께서는 호실에 비치된 아이패드를 이용해 보일러를 조절하실 수 있습니다.",
+                    "온돌모드를 사용하시고 잠시 기다리시면 따뜻한 물로 샤워하실 수 있습니다"
                 ]}
                 noticeIndex= {0}
                 imageSrc={undefined}
