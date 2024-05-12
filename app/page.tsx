@@ -23,6 +23,7 @@ export default function Home() {
 
   return (
     <div className="bg-white">
+      yes
       <div className="mx-auto flex flex-col max-w-7xl p-6 space-y-6 lg:px-8">
         <a href="/guide"><div className="m-2 p-10 sm:flex sm:justify-between text-white rounded-xl transition-all duration-500 bg-gradient-to-tl from-pink-500 via-red-500 to-yellow-400 bg-size-200 bg-pos-0 hover:bg-pos-100 hover:cursor-pointer">
           <div className="text-2xl p-3 font-extrabold">포항역 머무름 쉐어하우스 이렇게 사용해주세요</div>
