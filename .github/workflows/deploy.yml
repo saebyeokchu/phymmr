@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: zip create 
-        run: zip -qq -r ./phymmr.zip .
+        run: zip -qq -r ./phymmr.zip . -x /node_modules/**\*
         shell: bash
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
