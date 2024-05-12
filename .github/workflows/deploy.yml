@@ -1,0 +1,59 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Deploy phymmr
+
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name : checkout source code
+        uses : actions/checkout@v2
+      - name: Check Node v
+        run: node -v
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: zip create 
+        run: zip -qq -r ./phymmr.zip .
+        shell: bash
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Upload to S3 
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --region us-east-1 ./phymmr.zip s3://phymmr-deploy/phymmr.zip
+      - name: Deploy # Deploy to EC2
+        run: aws deploy create-deployment
+          --application-name phymmr
+          --deployment-config-name CodeDeployDefault.AllAtOnce
+          --deployment-group-name Github-deploy
+          --s3-location bucket=phymmr-deploy,key=phymmr-deploy/phymmr.zip,bundleType=zip
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
