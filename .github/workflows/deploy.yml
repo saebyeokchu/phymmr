@@ -38,6 +38,7 @@ jobs:
         run: aws deploy create-deployment
           --application-name phymmr
           --deployment-config-name CodeDeployDefault.AllAtOnce
+          --file-exists-behavior OVERWRITE
           --deployment-group-name Github-deploy
-          --s3-location bucket=phymmr-deploy,key=phymmr-deploy/phymmr.zip,bundleType=zip
+          --s3-location bucket=phymmr-deploy,key=phymmr.zip,bundleType=zip
 
