@@ -5,12 +5,13 @@ type AccordionBox = {
     noticeTitle : string,
     notices : string[], 
     noticeIndex : number, 
-    imageSrc? : string
+    imageSrc? : string,
+    titleColor? : string
 }
 
 export default function ForEveryone() {
     const [showMenu, setShowMenu] = useState<boolean[]>([]);
-    const menuNum : number =  11;
+    const menuNum : number =  12;
 
     useEffect(()=>{
         let initialShowMenuAry : boolean[] = []
@@ -22,11 +23,11 @@ export default function ForEveryone() {
         setShowMenu({...showMenu})
     }
 
-    const AccordionBox = ({noticeTitle,notices,noticeIndex,imageSrc} : AccordionBox ) =>
+    const AccordionBox = ({noticeTitle,notices,noticeIndex,imageSrc,titleColor} : AccordionBox ) =>
         <div>
-            <h2 className="mb-0 hover:text-purple-600" id="flush-headingOne" onClick={()=>onMenuClick(noticeIndex)}>
+            <h2 className={`mb-0 ${titleColor === 'red' && `text-red-600`} hover:text-yellow-600`} id="flush-headingOne" onClick={()=>onMenuClick(noticeIndex)}>
             <button
-                className="group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold"
+                className={`group relative flex w-full items-center rounded-none border-0 py-4 px-5 text-left text-base font-bold`}
                 type="button" >
                 {noticeTitle}
             </button>
@@ -47,6 +48,15 @@ export default function ForEveryone() {
 
     return (
         <>
+            <AccordionBox
+                noticeTitle = "🚨비상시"
+                notices= {[
+                    "아침 8시 ~ 저녁 10시까지는 에어비앤비 메세지를 통해 상시 연락가능합니다.",
+                    "이후 응급상황 발생시 010-2740-3096으로 전화부탁드립니다."
+                ]}
+                noticeIndex= {10}
+                titleColor="red"
+            />
             <AccordionBox
                 noticeTitle = "이것만은 꼭 지켜주세요!"
                 notices= {[
