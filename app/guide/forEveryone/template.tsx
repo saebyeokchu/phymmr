@@ -10,7 +10,7 @@ type AccordionBox = {
 
 export default function ForEveryone() {
     const [showMenu, setShowMenu] = useState<boolean[]>([]);
-    const menuNum : number =  10;
+    const menuNum : number =  11;
 
     useEffect(()=>{
         let initialShowMenuAry : boolean[] = []
@@ -56,7 +56,6 @@ export default function ForEveryone() {
                     "보일러는 사용시 온돌모드로 설정 후 잠시 기다려 주세요. 따뜻한 물이 가장 잘 나옵니다 :)"
                 ]}
                 noticeIndex= {0}
-                imageSrc={undefined}
             />
             <AccordionBox
                 noticeTitle = "오시는 길"
@@ -64,8 +63,16 @@ export default function ForEveryone() {
                     "버스이용시 학전행 305번에 탑승하시어 2정거장 이동 후 “대유아파트”에서 하차하시면 됩니다.(5분 소요)",
                     "도보 이용시 아래 약도를 참고해 이동하시면 빠르게 도착하실 수 있습니다"
                 ]}
-                noticeIndex= {1}
+                noticeIndex= {9}
                 imageSrc="map.png"
+            />
+            <AccordionBox
+                noticeTitle = "짐보관과 얼리체크인"
+                notices= {[
+                    "객실 청소 여부에 따라 얼리 체크인이 가능합니다. 가능여부는 에어비앤비 메세지로 문의해주세요",
+                    "체크인 당일, 체크아웃 당일 짐 보관이 가능합니다. 입구 행거 앞에 두시면 됩니다"
+                ]}
+                noticeIndex= {1}
             />
             <AccordionBox
                 noticeTitle = "체크인 방법"
