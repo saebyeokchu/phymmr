@@ -73,11 +73,10 @@ export default function Home() {
             { showFirstExtra && 
             <div className="border-t-2">
               <div className="text-xl font-semibold mt-4 mb-2">공실현황</div>
-              <div>👉 5월 13일 ~ 17일, 5월 20일 ~ 5월 24일, 5월 27일 ~ 5월 31일  </div>
-              <div>👉 6월 3일 ~ </div>
+              <div>👉 2025년 1월 ~ </div>
               <div className="text-xl font-semibold mt-4 mb-2">월 사용료</div>
-              <div>👉 48만원(기본생필품 및 청소서비스 포함) </div>
-              <div>👉 관리비 1/N </div>
+              <div>👉 43만원(기본생필품 및 청소서비스 포함) </div>
+              <div>👉 관리비 1/2 </div>
             </div>}
           </div>
         </div>
@@ -97,17 +96,16 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <div className="text-center justify-center border-t-2 border-gray-400 pt-3 mt-5 mb-3 hover:text-lg" onClick={()=>setShowSecondExtra(!showFirstExtra)}>
+            <div className="text-center justify-center border-t-2 border-gray-400 pt-3 mt-5 mb-3 hover:text-lg" onClick={()=>setShowSecondExtra(!showSecondExtra)}>
               더보기
             </div>
             { showSecondExtra && 
             <div className="border-t-2">
               <div className="text-xl font-semibold mt-4 mb-2">공실현황</div>
-              <div>👉 5월 13일 ~ 17일  </div>
-              <div>👉 9월 3일 ~ </div>
+              <div>👉 2025년 1월 ~ </div>
               <div className="text-xl font-semibold mt-4 mb-2">월 사용료</div>
               <div>👉 28만원(기본생필품 및 청소서비스 포함) </div>
-              <div>👉 관리비 1/N </div>
+              <div>👉 관리비 1/2 </div>
             </div>}
           </div>
         </div>

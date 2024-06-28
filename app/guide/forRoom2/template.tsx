@@ -53,29 +53,9 @@ export default function ForRoom2() {
     return (
         <>
             <AccordionBox
-                noticeTitle = "보일러"
-                notices= {[
-                    "에어비앤비 특징상 1번방에 보일러 온도 조절기가 위치하고 있습니다. 2번방 게스트분께서는 호실에 비치된 아이패드를 이용해 보일러를 조절하실 수 있습니다.",
-                    "온돌모드를 사용하시고 잠시 기다리시면 따뜻한 물로 샤워하실 수 있습니다"
-                ]}
-                noticeIndex= {0}
-                imageSrc={undefined}
-                video={true}
-            />
-            <AccordionBox
-                noticeTitle = "세탁서비스"
-                notices= {[
-                    "2호실 세탁서비스는 연박손님에게 ⭐무료⭐로 제공됩니다.",
-                    "방 안에 비치된 세탁바구니에 세탁물을 넣고 호스트에게 말씀해 주세요.",
-                    "건조까지 하여 당일 오후 6시 이전에 전달드립니다"
-                ]}
-                noticeIndex= {1}
-                imageSrc={undefined}
-            />
-            <AccordionBox
                 noticeTitle = "❌출입금지"
                 notices= {[
-                    "2호실 게스트는 베란다와 주방 옆 펜트리 출입을 삼가해 주세요."
+                    "2호실 게스트는 세탁실 출입시 협의된 시간을 준수하여 주시길 바랍니다"
                 ]}
                 noticeIndex= {2}
                 imageSrc={undefined}

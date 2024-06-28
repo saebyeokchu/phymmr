@@ -35,13 +35,13 @@ export default function Guide() {
                     {/* sm:justify-normal sm:flex-col  */}
                     <div className="flex flex-wrap md:flex md:justify-start space-x-0.5 ml-5">
                         <div><button className={`g-blue-500 ${ reservationType === "forEveryOne" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-yellow-700 text-white text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forEveryOne")}> 공통 안내 사항 </button></div>
-                        <div><button className={`g-blue-500 ${ reservationType === "forEntireApt" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-yellow-700 text-white text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forEntireApt")}> 머무름 전체 예약 </button></div>
+                        {/* <div><button className={`g-blue-500 ${ reservationType === "forEntireApt" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-yellow-700 text-white text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forEntireApt")}> 머무름 전체 예약 </button></div> */}
                         <div><button className={`g-blue-500 ${ reservationType === "forRoom1" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-yellow-700 text-white text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forRoom1")}> 1번방 예약 </button></div>
                         <div><button className={`g-blue-500 ${ reservationType === "forRoom2" ? "bg-yellow-700 text-white" : "bg-yellow-400" } font-bold py-2 px-4 rounded hover:bg-yellow-700 text-white text-xs md:text-base mb-0.5`} onClick={()=>adjustBelowList("forRoom2")}>2번방 예약</button></div>
                     </div>
                     <div className='mt-4'>
                         { reservationType === "forEveryOne"  && <ForEveryone />}
-                        { reservationType === "forEntireApt" && <ForEntireApt />}
+                        {/* { reservationType === "forEntireApt" && <ForEntireApt />} */}
                         { reservationType === "forRoom1"  && <ForRoom1 />}
                         { reservationType === "forRoom2"  && <ForRoom2 /> }
                     </div>
