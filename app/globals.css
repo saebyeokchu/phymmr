@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*editor*/
+#canvas{
+    cursor:pointer;
+    padding : 10px;
+    
+}
+
+#canvasWrapper {
+
+}
+
+#guide {
+    display: grid;
+    position: absolute;
+    /* border : 1px solid gray;
+    justify-content: center;
+    text-align: center; */
+    background-size: cover;
+}
+
+#guide div {
+    border : 1px solid gray;
+    z-index: 3;
+}
+
+#printGuide {
+    display: grid;
+    /* border : 1px solid gray; */
+    /* height:297mm;
+    width:210mm; */
+    background-size: cover;
+}
+
+#printGuide div {
+    border : 1px solid gray;
+}
+
+.selected {
+    border : 1px solid gray;
+    z-index: 14;
+}
+
+#pickedColorDiv {
+    width: '36px';
+    height: '14px';
+}
+
+.colorPallete {
+    cursor : pointer;
+}
+
+.colorPallete:hover {
+    transform: scale(1.2);
+}
+
+/* #printPage{
+    height:297mm;
+    width:210mm;
+} */
+#section-to-print{
+    transform: scale(0.5);
+}
+
+@media print {
+    body {
+      visibility: hidden;
+    }
+    #section-to-print {
+      visibility: visible;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: scale(1.0);
+    }
+  }
+
+.gear {
+    position:absolute;
+}
