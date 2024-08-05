@@ -6,6 +6,8 @@
 
 import { color, frame } from "./types";
 
+const AWS_IMAGE_S3_URL : string = "https://deform-gongbae.s3.us-west-2.amazonaws.com";
+
 // const frames : frame[] = [
 //     {
 //         name : "A4",
@@ -105,5 +107,6 @@ export {
     // frames,
     bizs,
     predefinedColors,
-    predefinedFrames
+    predefinedFrames,
+    AWS_IMAGE_S3_URL
 }

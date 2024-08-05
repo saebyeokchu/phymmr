@@ -1,3 +1,4 @@
+import { AWS_IMAGE_S3_URL } from "@/app/editor/dictionary/variables";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 export default function PrintGuide({drawContents, blockWidth, showPrintDiv} : {drawContents : any[], blockWidth : number, showPrintDiv:boolean}) {
@@ -63,7 +64,7 @@ export default function PrintGuide({drawContents, blockWidth, showPrintDiv} : {d
             if(alreadyFilled){
                 setPrintContents(printContents.filter((content,index) => index !== contentIndex))
             }else{
-                const element = <img src="/block/black-block.png" width={42} height={42} style={{position:"absolute",top:startY,left:startX,zIndex:30}} />;
+                const element = <img src={`${AWS_IMAGE_S3_URL}/block/black-block.png`} width={42} height={42} style={{position:"absolute",top:startY,left:startX,zIndex:30}} />;
                 setPrintContents([ ... printContents, element]);
             }
 

@@ -3,6 +3,7 @@ import { MyButton } from "../dictionary/templates";
 import { useAlterContext } from "../context/AlterContext";
 import { turnOnAlter } from "../dictionary/functions";
 import moment from 'moment';
+import { AWS_IMAGE_S3_URL } from "../dictionary/variables";
 
 export default function Header( {guideRef} : { guideRef: any | never }) {
 
@@ -36,7 +37,7 @@ export default function Header( {guideRef} : { guideRef: any | never }) {
     <div className="nav mx-auto flex items-center justify-between p-6">
     <div>
       <a href="/">
-        <img className="w-3" style={{width:'200px'}}src="/gone-bae-high-resolution-logo-transparent.png" alt="" />
+        <img className="w-3" style={{width:'200px'}} src={`${AWS_IMAGE_S3_URL}/gone-bae-high-resolution-logo-transparent.png`} alt="" />
       </a>
     </div>
     <div className="flex space-x-3">

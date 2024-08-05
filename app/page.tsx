@@ -121,7 +121,7 @@ export default function Home() {
         <div className="flex flex-col justify-center text-center bg-yellow-500 rounded-3xl">
           <div className="font-semibold text-xl text-white pt-10"> 자유롭게 사용하실 수 있는 주방 </div>
           <div className="flex space-x-4">
-          <div className="mt-7 mb-10 p-5"> <img className="rounded-3xl" src="https://phymmr.s3.us-east-2.amazonaws.com/kitchen.jpg" /> </div>
+          <div className="mt-7 mb-10 p-5"> <img className="rounded-3xl" src="https://phymmr.s3.us-east-2.amazonaws.com/hen.jpg" /> </div>
           </div>
         </div>
         <div className="h-20"></div>

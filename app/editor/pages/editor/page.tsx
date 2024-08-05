@@ -3,7 +3,7 @@
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
 import { useAlterContext } from "@/app/editor/context/AlterContext";
 
-import { predefinedColors, predefinedFrames } from "@/app/editor/dictionary/variables";
+import { AWS_IMAGE_S3_URL, predefinedColors, predefinedFrames } from "@/app/editor/dictionary/variables";
 
 import { findColosestColor, isBlack, isWhite } from "@/app/editor/pages/editor/logic/color";
 import { color, rgb } from "@/app/editor/dictionary/types";
@@ -238,10 +238,10 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
                 setDrawContents(drawContents.filter((content: any,index: number) => index !== contentIndex))
             }else if(colorChange){
                 const temp = drawContents.filter((content: any,index: number) => index !== contentIndex);
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
+                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
                 setDrawContents([ ... temp, element]);
             }else{
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
+                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
                 setDrawContents([ ... drawContents, element]);
             }
 
@@ -288,7 +288,7 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
                 setDrawContents(drawContents.filter((content: any,index: number) => index !== contentIndex))
             }else if(colorChange){
                 const temp = drawContents.filter((content: any,index: number) => index !== contentIndex);
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
+                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
                 setDrawContents([ ... temp, element]);
             }else{
                 const keyName = `${startX}-${startY}-${selectedColorName}`;
@@ -297,7 +297,7 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
                 const height =  `${blockWidth+7}`;
  
                 // const element = " <img class='gear' key='"+keyName+"' src='"+srcName+"' width=\""+width+"\" height=\""+height+"\" style=\"top:"+startY+";left:"+startY+";z-index:6;\" />";
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
+                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
                 setDrawContents([ ... drawContents, element]);
                 // console.log( [ ... drawContents, element]);
                 // [ ... drawContents, element].map(ele =>guide.insertAdjacentHTML("beforeend",ele));
@@ -459,7 +459,7 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
             console.log(++childIndex, child, colorList);
 
             //start point
-            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`/block/${colorList[0][0]}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
+            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`${AWS_IMAGE_S3_URL}/block/${colorList[0][0]}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
             drawElementAry.push(element);
             // console.log(drawElementAry);
 
@@ -531,7 +531,7 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
             console.log(++childIndex, child, colorName);
 
             //start point
-            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`/block/${colorName}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
+            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`${AWS_IMAGE_S3_URL}/block/${colorName}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
             drawElementAry.push(element);
             console.log(drawElementAry);
         }
