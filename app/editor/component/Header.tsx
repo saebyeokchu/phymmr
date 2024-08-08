@@ -4,10 +4,12 @@ import { useAlterContext } from "../context/AlterContext";
 import { turnOnAlter } from "../dictionary/functions";
 import moment from 'moment';
 import { AWS_IMAGE_S3_URL } from "../dictionary/variables";
+import { usePrintContext } from "../context/PrintContext";
 
 export default function Header( {guideRef} : { guideRef: any | never }) {
 
   const alter  = useAlterContext();
+  const printContext = usePrintContext();
 
   let [ showDropdownMenu, setShowDropdownMenu ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
   let [ temporaliySaveTime, setTemporaliySaveTime ] : [string, Dispatch<SetStateAction<string>> ] = useState('');
@@ -30,6 +32,10 @@ export default function Header( {guideRef} : { guideRef: any | never }) {
 
     const savedTime : string = moment().format('HH:mm:ss');
     setTemporaliySaveTime(savedTime);
+}
+
+const handleOnPrintClick = () => {
+  printContext.setDoPrint(true);
 }
 
 
@@ -64,16 +70,17 @@ export default function Header( {guideRef} : { guideRef: any | never }) {
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">주문하기</a>
             </li>
             <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">출력하기</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOnPrintClick}>출력하기</a>
             </li>
             <li>
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">공유하기</a>
             </li>
           </ul>
-          <div className="py-2">
+          {/* <div className="py-2">
             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Separated link</a>
-          </div>
-        </div> }
+          </div> */}
+        </div> 
+        }
       </div>
     </div>
 

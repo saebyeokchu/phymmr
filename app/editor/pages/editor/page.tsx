@@ -1,33 +1,31 @@
 "use client"
 
-import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState } from "react";
-import { useAlterContext } from "@/app/editor/context/AlterContext";
+import { Dispatch, MutableRefObject, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 
-import { AWS_IMAGE_S3_URL, predefinedColors, predefinedFrames } from "@/app/editor/dictionary/variables";
-
-import { findColosestColor, isBlack, isWhite } from "@/app/editor/pages/editor/logic/color";
-import { color, rgb } from "@/app/editor/dictionary/types";
-import { Alter, DimBackground, MyButton } from "@/app/editor/dictionary/templates";
+import { findColosestColor, isBlack, isWhite } from "./logic/color";
+import { AWS_IMAGE_S3_URL, bizs, predefinedColors, predefinedFrames } from "@/app/editor/dictionary/variables";
+import { color, rgb } from "@/app//editor/dictionary/types";
+import { Alter, DimBackground, DropDown, MyButton } from "@/app/editor/dictionary/templates";
 
 import {
     ColorPalette,
-    PrintGuide,
-    PrintPopUp
 } from "./component";
+import React from "react";
+import { useDragContext } from "../../context/DragContex";
+import { calculateBackgorundSize } from "./logic/size";
 
-
-export default function Editor(  {guideRef} : { guideRef: any | never } ){
+export default function Editor(  {guideRef, printGuideRef} : { guideRef: any | never, printGuideRef : any } ){
     const canvasRef : any = useRef(undefined);
     const imgRef : any = useRef(undefined);
-    const inputRef : any = useRef(undefined);
+    const currentColorRef : any = useRef(undefined);
+    const backgroundImageRef : any = useRef(undefined);
+    
+    const dragContext : any = useDragContext();
 
     const basicBizLength : number = 10;
     const basicFrameName : string = "A4";
     const basicColorName : string = "black";
 
-    const alter  = useAlterContext();
-
-    let [ drawContents, setDrawContents ] : [ any[], Dispatch<SetStateAction<any[]>> ] = useState([]);
 
     let [ blockWidth, setBlockWidth ] : [number, Dispatch<SetStateAction<number>>] = useState(-1);
     let [ blockHeight, setBlockHeight ] : [number, Dispatch<SetStateAction<number>>] = useState(-1);
@@ -36,7 +34,6 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
     let [ selectedFrameName, setSelectedFrameName ] : [ string, Dispatch<SetStateAction<string>>] = useState(basicFrameName);
     let [ selectedColorName, setSelectedColorName ] : [ string, Dispatch<SetStateAction<string>> ] = useState(basicColorName);
 
-    let [ showPrintOpt, setShowPrintOpt ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
     let [ blockWindow, setBlockWindow ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
     let [ hideImageOnCanvas, setHideImageOnCanvas ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
     let [ generateOnlyBlocks, setGenerateOnlyBlocks ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
@@ -59,34 +56,25 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
 
     const drawCanvas = () => {
         if(canvasRef.current===null) return;
-        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize();
+        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize(selectedFrameName);
 
         var canvas : any = canvasRef.current;
         canvas.width = drawingBackgroundWidth;
         canvas.height = drawingBackgroundHeight;
     }
 
-    function calculateBackgorundSize(){
-        let selectedFrame = predefinedFrames[selectedFrameName ]
-
-        //화면 비율에 따른 가로 세로 그림판 전체 크기 구하기
-        let width : number = window.innerWidth * ( 3 / 5 );
-
-        //높이는 A4로 고정하자
-        let height : number = width * ( selectedFrame.height / selectedFrame.width );
-
-        while(height > window.innerHeight - 150){
-            height = width * ( selectedFrame.height / selectedFrame.width );
-            width -= 10; //너무 많이 초과하면
-        }
-
-        //console.log("[width, height] : [", drawingBackgroundWidth, ",",drawingBackgroundHeight,"]");
-
-        return [width, height];
+    function testDrawEvent(target : any){
+        const tempTest = (event : MouseEvent) => console.log(event.type,event.clientX, event.clientY);
+        target.addEventListener("dragstart",tempTest)
+        target.addEventListener("dragover",tempTest)
+        target.addEventListener("dragend",tempTest)
+        target.addEventListener("drop",tempTest)
+        target.addEventListener("dragleave",tempTest)
+        target.addEventListener("dragenter",tempTest)
     }
 
     function createGuideline(){
-        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize();
+        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize(selectedFrameName);
         const guide = guideRef.current;
 
         if(guide === null){
@@ -95,11 +83,10 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
 
         let selectedFrame = predefinedFrames[selectedFrameName];
         guide.innerHTML = '';
-        setDrawContents(drawContents);
 
         //비즈 크기만큼 사각형 생성
-        let bizRowCount : number = Math.floor(selectedFrame.width / 10);
-        let bizColCount : number =  Math.floor(selectedFrame.height / 10);
+        let bizRowCount : number = Math.floor(selectedFrame.width / selectedBizLength);
+        let bizColCount : number =  Math.floor(selectedFrame.height / selectedBizLength);
         let bizWidth : number = Math.floor(drawingBackgroundWidth/bizRowCount);
         let bizHeight : number = Math.floor(drawingBackgroundHeight/bizColCount);
 
@@ -116,69 +103,45 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
 
         //populate guide so div can display
         [ ... Array(Math.floor(bizRowCount*bizColCount)) ].forEach(() => guide.insertAdjacentHTML("beforeend","<div draggable='true' class='bizDiv nonSelected'></div>"));
-
-        // guide.addEventListener("dragstart",function(event:any){handleOnGuideDrag(event, bizWidth)})
-        guide.addEventListener("dragover",function(event:any){handleOnGuideDrag(event, bizWidth)})
-        // guide.addEventListener("dragend",function(event:any){handleOnGuideDrag(event, bizWidth)})
-        // guide.addEventListener("drop",function(event:any){handleOnGuideDrag(event, bizWidth)})
-        // guide.addEventListener("dragleave",function(event:any){handleOnGuideDrag(event, bizWidth)})
-        // guide.addEventListener("dragenter",function(event:any){handleOnGuideDrag(event, bizWidth)})
-
         
-        // let index : number = 1;
-        // for(const child of guide.children){
-        //     console.log(child)
-        //     // child.ondragstart = (event: any) => {console.log(child,"drag start ",event)};
-        //     //child.addEventListner("dragstart", () => console.log(child,"drag start ",false))
-        //     child.addEventListener("dragstart", (event: any) => handleDragStart(event, index, child), false);
-        //     child.addEventListener("dragenter", (event: any) => handleDragEnter(event, index, child), false);
-        //     child.addEventListener("dragover", (event: any) => handleDragOver(event, index, child), false);
-        //     child.addEventListener("dragleave", (event: any) => handleDragLeave(event, index, child), false);
-        //     child.addEventListener("drop", (event: any) => handleDragDrop(event, index, child), false);
-        //     child.addEventListener("dragend", (event: any) => handleDragEnd(event, index, child), false);
+        // testDrawEvent(guide);
+        guideRef.current.addEventListener("dragstart",() => {
+            dragContext.dragStatus = "start";
+            console.log(dragContext.dragStatus);
+        })
+        guideRef.current.addEventListener("dragover",function(event:any){
+            handleOnGuideMouseEvent(event, bizWidth, currentColorRef.value);
+        })
+        guideRef.current.addEventListener("dragend",()=> {
+            dragContext.dragStatus = "end";
+            dragContext.dragEventRecordSheet = [];
+            console.log(dragContext.dragStatus);
+        })
+       
+        // guide.addEventListener("dragstart",() => {
+        //     setDragEventStatus("start");
+        //     console.log("darg envet start",dragEventStatus);
 
-        //     index++;
-        // }
+        //     dragSta="start";
+        //     console.log(dragSta);
+        // })
+        // guide.addEventListener("dragover",function(event:any){handleOnGuideMouseEvent(event, bizWidth)})
+        // guide.addEventListener("dragend",()=> {
+        //     dragSta="";
+        //     console.log("darg envet leave",dragSta);
+        //     dragEventRecordSheet = [];
+        // })
+
     }
 
-    const handleDragStart = (event : any, index : number, child:any) => {
-        console.log(index, "drag start");
-        event.dataTransfer.effectAllowed = "move";
-        handleOnGuideClick(event);
-    }
-
-    const handleDragEnter = (event : any, index : number, child:any) => {
-        console.log(index, "dragenter");
-        child.classList.add("over");
-        handleOnGuideClick(event);
-    }
-
-    const handleDragOver = (event : any, index : number, child:any) => {
-        console.log(index, "handleDragOver");
-        if (event.preventDefault) {
-            event.preventDefault();
-          }
-          event.dataTransfer.dropEffect = "move";
-        handleOnGuideClick(event);
-    }
-
-    const handleDragLeave = (event : any, index : number, child:any) => {
-        console.log(index, event, "dragleave");
-        child.classList.remove("over");
-        handleOnGuideClick(event);
-    }
-
-    const handleDragDrop = (event : any, index : number, child:any) => {
-        console.log(index, event, "handleDragDrop");
-        if (event.stopPropagation) {
-            event.stopPropagation();
-          }
-        handleOnGuideClick(event);
-    }
-
-    const handleDragEnd = (event : any, index : number, child:any) => {
-        console.log(index, event, "handleDragEnd");
-        handleOnGuideClick(event);
+    const handleBlockSizeDropdownClick = (value : any) => {
+        if(window.confirm("비즈크기를 조정하면 현재 저장된 데이터가 모두 삭제됩니다. 진행하시겠습니까?")){
+            setSelectedBizLength(value);
+            createGuideline();
+            setTimeout(()=>window.localStorage.removeItem("bizTempSave"),1000);
+            return true;
+        }
+        return false;
     }
 
     const checkTempSave = () => {
@@ -187,6 +150,10 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
         if(savedDrawing && savedDrawing != "" && window.confirm("저장된 데이터를 불러오시겠습니까?")){
             guideRef.current.innerHTML = '';
             guideRef.current.innerHTML = savedDrawing;
+
+            printGuideRef.current.innerHTML = '';
+            printGuideRef.current.innerHTML = savedDrawing;
+
             console.log("savedDrawing", savedDrawing);
         }
 
@@ -194,123 +161,104 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
     }
 
     /* EVENT HANDLER */
-    function handleOnPrintClick() {
-        printDrawing();
-    }
-    
-    function handleOnGuideClick(clickEvent : any) {
+    function handleOnGuideMouseEvent(mouseEvent : any, blockWidthInput : number | undefined, colorInput : string | undefined){
 
-        console.log("[handleOnGuideClick]");
+        if(blockWidthInput === undefined){
+            blockWidthInput = blockWidth;
+        }
+
+        if(colorInput === undefined){
+            colorInput = selectedColorName;
+        }
+
+        console.log("[handleOnGuideMouseEvent]",selectedColorName,dragContext.dragColorName);
         const guide = guideRef.current;
 
         if(guide != null){
             var alreadyFilled : boolean = false;
-            var colorChange : boolean = false;
-            var contentIndex : number = -1;
-            // console.log(clickEvent)
-            const rect = guide.getBoundingClientRect()
-            const x = clickEvent.clientX - rect.left
-            const y = clickEvent.clientY - rect.top
+            var colorChanged : boolean = false;
+
+            const rect = guide.getBoundingClientRect();
+            const x = mouseEvent.clientX - rect.left;
+            const y = mouseEvent.clientY - rect.top;
 
             //start point
-            const startX = ~~(( (~~(x/blockWidth)) * blockWidth));
-            const startY = ~~(( (~~(y/blockWidth)) * blockWidth ));
-            console.log(`${x} => ${startX}, ${y} => ${startY}`);
+            const startX = ~~(( (~~(x/blockWidthInput)) * blockWidthInput));
+            const startY = ~~(( (~~(y/blockWidthInput)) * blockWidthInput ));
+            // console.log(`${x} => ${startX}, ${y} => ${startY}`);
             
-
             //같은 자리에 이미 있는지 찾고, 있으면 삭제하기
-            drawContents.map((content,index) => {
-                const thisTop : number = content.props.style.top;
-                const thisLeft : number = content.props.style.left;
+            const guideImageElementList : any = document.getElementsByClassName("guideImageElement");
+            let targetImgId : string | undefined = undefined;
+            
+            for(let guideImage of guideImageElementList){
+                //src, top, left
+                const thisSrc : string = guideImage.currentSrc;
+                const thisTop : number = parseInt(guideImage.style.top.replace("px",""));
+                const thisLeft : number = parseInt(guideImage.style.left.replace("px",""));
 
                 if(startX === thisLeft && startY === thisTop){
-                    if(content.props.src.search(selectedColorName) === -1){
-                        colorChange = true;
+                    if(thisSrc.search(colorInput) === -1){
+                        colorChanged = true;
                     }else{
                         alreadyFilled = true;
                     }
-                    contentIndex = index;
-                    return;
+                    targetImgId = guideImage.id;
+                    break;
                 }
-            });
-
-            if(alreadyFilled){
-                setDrawContents(drawContents.filter((content: any,index: number) => index !== contentIndex))
-            }else if(colorChange){
-                const temp = drawContents.filter((content: any,index: number) => index !== contentIndex);
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
-                setDrawContents([ ... temp, element]);
-            }else{
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
-                setDrawContents([ ... drawContents, element]);
             }
 
-        }
-    }
+            const imgSrc = `${AWS_IMAGE_S3_URL}/block/${colorInput}-block.png`;
+            const keyName = `${startX}-${startY}-${colorInput}`;
+            let proceed : boolean = true;
 
-    const handleOnGuideDrag = (dragEvent : any, blockWidth : number) => {
-        console.log([handleOnGuideDrag]);
+            //drag인 경우 이번 start version에서 한번도 방문을 했는지 안했는지 체크
+            if(dragContext.dragStatus === "start") { //drag event 가 어디에선가라도 출발했으면
+                //중복체크
+                if(dragContext.dragEventRecordSheet.length > 0 && dragContext.dragEventRecordSheet.includes(keyName)){
+                    proceed = false;
+                }else{
+                    dragContext.dragEventRecordSheet.push(keyName);
+                }
+                // console.log("drag envet",dragContext.dragEventRecordSheet,keyName,proceed);
+            }
 
-        const guide = guideRef.current;
-
-        if(guide != null){
-            var alreadyFilled : boolean = false;
-            var colorChange : boolean = false;
-            var contentIndex : number = -1;
-            // console.log(clickEvent)
-            const rect = guide.getBoundingClientRect()
-            const x = dragEvent.clientX - rect.left
-            const y = dragEvent.clientY - rect.top
-
-            //start point
-            const startX = ~~(( (~~(x/blockWidth)) * blockWidth));
-            const startY = ~~(( (~~(y/blockWidth)) * blockWidth ));
-
-            //같은 자리에 이미 있는지 찾고, 있으면 삭제하기
-            drawContents.map((content,index) => {
-                const thisTop : number = content.props.style.top;
-                const thisLeft : number = content.props.style.left;
-
-                if(startX === thisLeft && startY === thisTop){
-                    if(content.props.src.search(selectedColorName) === -1){
-                        colorChange = true;
-                    }else{
-                        alreadyFilled = true;
+            if(proceed){
+                if(targetImgId != undefined ){
+                    //remove block && mouseEvent.type.search('drag') === -1
+                    //2024 08 07 drage할때 삭제 잘 안됨
+                    const targetBlock : any = document.getElementById(targetImgId);
+    
+                    if(targetBlock){
+                        if(alreadyFilled){
+                            targetBlock.remove();
+                        }
+    
+                        if(colorChanged){
+                            targetBlock.src = imgSrc;
+                        }
                     }
-                    contentIndex = index;
-                    return;
+                }else{
+                    const imgStr : string = "<img id='" + keyName + "'  class=\"guideImageElement\" width=\""+(blockWidthInput+5)+"\" src='" + imgSrc + "' style='position : absolute;top:"+startY+"px;left:"+startX+"px;z-index:6' />"
+                    guide.insertAdjacentHTML('beforeend', imgStr);
+                    
+                   
                 }
-            });
 
-            console.log(`${x} => ${startX}, ${y} => ${startY}`, colorChange, alreadyFilled);
-
-            if(alreadyFilled){
-                setDrawContents(drawContents.filter((content: any,index: number) => index !== contentIndex))
-            }else if(colorChange){
-                const temp = drawContents.filter((content: any,index: number) => index !== contentIndex);
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
-                setDrawContents([ ... temp, element]);
-            }else{
-                const keyName = `${startX}-${startY}-${selectedColorName}`;
-                const srcName = `/block/${selectedColorName}-block.png`;
-                const width = `${blockWidth+5}`;
-                const height =  `${blockWidth+7}`;
- 
-                // const element = " <img class='gear' key='"+keyName+"' src='"+srcName+"' width=\""+width+"\" height=\""+height+"\" style=\"top:"+startY+";left:"+startY+";z-index:6;\" />";
-                const element = <img key={`${startX}-${startY}-${selectedColorName}`} src={`${AWS_IMAGE_S3_URL}/block/${selectedColorName}-block.png`} width={blockWidth+5} height={blockWidth+7} style={{position:"absolute",top:startY,left:startX,zIndex:6}} />;
-                setDrawContents([ ... drawContents, element]);
-                // console.log( [ ... drawContents, element]);
-                // [ ... drawContents, element].map(ele =>guide.insertAdjacentHTML("beforeend",ele));
-                // guide.insertAdjacentHTML("beforeend","<h1>hi</h1>");
-
+                if(printGuideRef.current != null){
+                    printGuideRef.current.innerHTML = guide.innerHTML;
+                }
             }
-
+            
         }
+
     }
 
     const handleOnClickColor = (color : color) => {
         setSelectedColorName(color.name);
-        
+        dragContext.dragColorName = color.name;
+        currentColorRef.value=color.name;
+        console.log("handleOnClickColor",currentColorRef);
     }
 
     const handleOnLoadFile = ( imageData : any ) => {
@@ -323,21 +271,20 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
 
         reset();
         const ctx = canvasRef.current.getContext("2d");
-        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize();
+        const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize(selectedFrameName);
 
         //draw backgorund 
         // guideRef.current.style.backgroundImage = "url("+URL.createObjectURL(imageData.target.files[0])+")";
-        imgRef.current.src =   URL.createObjectURL(imageData.target.files[0]);
+        imgRef.current.src = URL.createObjectURL(imageData.target.files[0]);
+
+        console.log(imageData);
+
         imgRef.current.onload = function () {
             console.log(imgRef, imgRef.current.offsetHeight, imgRef.current.height, imageData.target.files[0], imageData.target);
             ctx.drawImage(imgRef.current,0,0,imgRef.current.naturalWidth,imgRef.current.naturalHeight,0,0, drawingBackgroundWidth, drawingBackgroundHeight); 
             automaticallyDrawingCanvas1();
             setIsImageUploaded(true);
             setImageUploading(false);
-
-            // setDrawContents(
-
-            // );
         }
         // img.naturalWidth,img.naturalHeight
     }
@@ -346,7 +293,7 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
         if(generateOnlyBlocks){
             automaticallyDrawingCanvas1();
         }else{
-            removeBizs();
+            removeBlocks();
         }
 
         setGenerateOnlyBlocks(!generateOnlyBlocks);
@@ -363,16 +310,36 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
         setHideImageOnCanvas(!hideImageOnCanvas);
     }
 
-    const removeBizs = () => {
-        setDrawContents([]);
+    const removeBlocks = () => {
+        // let blocks : any = document.getElementsByClassName("guideImageElement");
+        // console.log(blocks);
+        // for(let block of blocks){
+        //     block.remove();
+        // }
+
+        console.log("removeBlocks");
+
+        guideRef.current.innerHTML = '';
+        createGuideline();
     }
 
     function reset() { //clear canvas
-        // if(inputRef.current){
-        //     inputRef.current.value = null;
-        // }
 
-        removeBizs();
+        if(backgroundImageRef.current){
+            backgroundImageRef.current.removeChild(backgroundImageRef.current.children[0])
+            backgroundImageRef.current.innerHTML = '';
+            <input type="file" id="img" name="img" accept="image/*" onChange={handleOnLoadFile} />
+
+            const imageInputEle : HTMLInputElement  = document.createElement("input");
+            imageInputEle.type = "file";
+            imageInputEle.id = "img";
+            imageInputEle.accept = "image/*";
+            imageInputEle.onchange = handleOnLoadFile;
+
+            backgroundImageRef.current.appendChild(imageInputEle);
+        }
+
+        removeBlocks();
 
         if(canvasRef.current){
             canvasRef.current.getContext("2d").clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -383,27 +350,6 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
         }
 
         setIsImageUploaded(false);
-    }
-
-    function printDrawing() {
-        setShowPrintOpt(true);
-        //window.print();
-        return;
-        console.log("[printDrawing]");
-        setShowPrintOpt(true);
-        setTimeout(()=>{
-            window.print();
-            setTimeout(()=>{
-                setShowPrintOpt(false);
-            },500);
-        },1000);
-        
-    }
-
-    function cancelPrint() {
-        console.log("cancelPrint");
-        window?.localStorage?.removeItem("printHTML");
-        setShowPrintOpt(false);
     }
 
     //version 1
@@ -417,74 +363,91 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
         var childIndex : number = 0;
 
         for(let child of guideRef.current.children){ //https://stackoverflow.com/questions/2541481/get-average-color-of-image-via-javascript
-            const bcr : DOMRect = child.getBoundingClientRect();
-            const [ x, y, width, height ] = [ bcr.x, bcr.y, bcr.width, bcr.height ];
+            // console.log(guideRef.current.children.length,childIndex ++);
 
-            const imageData : any = ctx.getImageData(x - firstXPosition, y-firstYPosition,width, height);
-            var j : number = 0;
-            var count : number = 1;
-
-            var colorClassDictionary : { [ colorName : string ] : number } = { };
-            predefinedColors.map(colors => colors.map(color => {
-                colorClassDictionary[color.name] = 0;
-            }));
-
-            while ( (j += 4) < imageData.data.length ) { 
-                var rgba : rgb = {r:0,g:0,b:0,a:0};
-                //console.log("data [",j,"] 번째 데이터");
-                count++;
-                // rgba.r += imageData.data[j];
-                // rgba.g += imageData.data[j+1];
-                // rgba.b += imageData.data[j+2];
-                // rgba.a += imageData.data[j+3];
-
-                rgba.r = imageData.data[j];
-                rgba.g = imageData.data[j+1];
-                rgba.b = imageData.data[j+2];
-                rgba.a = imageData.data[j+3];
-
-                if(isBlack(rgba)){
-                    colorClassDictionary["black"] ++;
-                }else if(isWhite(rgba)){
-                    colorClassDictionary["white"] ++;
-                }else{
-                    colorClassDictionary[findColosestColor(rgba, child)] ++;
-                }
-            }
-
-            //find most frequent color name 
-            const colorList :[string, number][] = Object.entries(colorClassDictionary);
-            colorList.sort((a,b) => b[1] - a[1])
-
-            console.log(++childIndex, child, colorList);
-
-            //start point
-            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`${AWS_IMAGE_S3_URL}/block/${colorList[0][0]}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
-            drawElementAry.push(element);
-            // console.log(drawElementAry);
-
-
-            // rgba.r = ~~(rgba.r/count);
-            // rgba.g = ~~(rgba.g/count);
-            // rgba.b = ~~(rgba.b/count);
-            // rgba.a = ~~(rgba.a/count);
-
+            if(child.className.search('bizDiv') > -1){
+                const bcr : DOMRect = child.getBoundingClientRect();
             
-            // if(rgba.r === 0 && rgba.g === 0 && rgba.b === 0){
-            //     if( rgba.a > 240 ){
-            //         colorName = "black";
-            //     }else if(rgba.a < 20){
-            //         colorName = "white";
-            //     }
-            // }else if(!(rgba.r === 0 && rgba.g === 0 && rgba.b === 0) && !(rgba.r === 255 && rgba.g === 255 && rgba.b === 255)){
-            //     //if it is not white or black find substitute
-            //     colorName = findColosestColor(rgba);
-            // }
-
-      
+                if(bcr.height == 0 || bcr.width == 0 ){
+                    continue;
+                }
+    
+                const [ x, y, width, height ] = [ bcr.x, bcr.y, bcr.width, bcr.height ];
+    
+                const imageData : any = ctx.getImageData(x - firstXPosition, y-firstYPosition,width, height);
+                var j : number = 0;
+                var count : number = 1;
+    
+                var colorClassDictionary : { [ colorName : string ] : number } = { };
+                predefinedColors.map(colors => colors.map(color => {
+                    colorClassDictionary[color.name] = 0;
+                }));
+    
+                while ( (j += 4) < imageData.data.length ) { 
+                    var rgba : rgb = {r:0,g:0,b:0,a:0};
+                    //console.log("data [",j,"] 번째 데이터");
+                    count++;
+                    // rgba.r += imageData.data[j];
+                    // rgba.g += imageData.data[j+1];
+                    // rgba.b += imageData.data[j+2];
+                    // rgba.a += imageData.data[j+3];
+    
+                    rgba.r = imageData.data[j];
+                    rgba.g = imageData.data[j+1];
+                    rgba.b = imageData.data[j+2];
+                    rgba.a = imageData.data[j+3];
+    
+                    if(isBlack(rgba)){
+                        colorClassDictionary["black"] ++;
+                    }else if(isWhite(rgba)){
+                        colorClassDictionary["white"] ++;
+                    }else{
+                        colorClassDictionary[findColosestColor(rgba, child)] ++;
+                    }
+                }
+    
+                //find most frequent color name 
+                const colorList :[string, number][] = Object.entries(colorClassDictionary);
+                colorList.sort((a,b) => b[1] - a[1])
+    
+                // console.log(++childIndex, child, colorList);
+    
+                //start point
+                const imgSrc = `${AWS_IMAGE_S3_URL}/block/${colorList[0][0]}-block.png`;
+                const keyName = `${Math.round(x - firstXPosition)}-${Math.round(y-firstYPosition)}-${colorList[0][0]}`;
+    
+                const imgStr : string = "<img id='" + keyName + "'  class=\"guideImageElement\" width=\""+(blockWidth+5)+"\" src='" + imgSrc + "' style='position : absolute;top:"+Math.round(y-firstYPosition)+"px;left:"+Math.round(x - firstXPosition)+"px;z-index:6' />"
+                console.log(keyName);
+                guideRef.current.insertAdjacentHTML('beforeend', imgStr);
+                
+                //const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`/block/${colorList[0][0]}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
+                //drawElementAry.push(element);
+                // console.log(drawElementAry);
+    
+    
+                // rgba.r = ~~(rgba.r/count);
+                // rgba.g = ~~(rgba.g/count);
+                // rgba.b = ~~(rgba.b/count);
+                // rgba.a = ~~(rgba.a/count);
+    
+                
+                // if(rgba.r === 0 && rgba.g === 0 && rgba.b === 0){
+                //     if( rgba.a > 240 ){
+                //         colorName = "black";
+                //     }else if(rgba.a < 20){
+                //         colorName = "white";
+                //     }
+                // }else if(!(rgba.r === 0 && rgba.g === 0 && rgba.b === 0) && !(rgba.r === 255 && rgba.g === 255 && rgba.b === 255)){
+                //     //if it is not white or black find substitute
+                //     colorName = findColosestColor(rgba);
+                // }
+    
+            }
         }
 
-        setDrawContents(drawElementAry);
+        if(printGuideRef.current != null){
+            printGuideRef.current.innerHTML = guideRef.current.innerHTML;
+        }
     }
 
     //version2
@@ -531,17 +494,15 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
             console.log(++childIndex, child, colorName);
 
             //start point
-            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`${AWS_IMAGE_S3_URL}/block/${colorName}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
+            const element = <img key={`block-${x - firstXPosition}-${y-firstYPosition}`} src={`/block/${colorName}-block.png`} width={blockWidth+4} height={blockWidth+4} style={{position:"absolute",top:Math.round(y-firstYPosition),left:Math.round(x - firstXPosition),zIndex:6}} />;
             drawElementAry.push(element);
             console.log(drawElementAry);
         }
 
-        setDrawContents(drawElementAry);
     }
 
     {/* src="https://deform-gongbae.s3.us-west-2.amazonaws.com/test1-crop.png"  style={{width:"210mm", height:"297mm"}}  */}
     return <div className="nav mx-auto flex items-center p-6">
-
         { isImageUploading &&
             <>
                 <DimBackground  />
@@ -567,8 +528,8 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
             </div> :
             <div className={`flex w-full `} >
                 <div className="w-3/4 flex justify-center " id="drawCanvas" >
-                    <div id="guide" style={{position:'relative'}} ref={guideRef} onClick={handleOnGuideClick}>
-                        {drawContents.map(content => content)}  
+                    <div id="guide" style={{position:'relative'}} ref={guideRef} onClick={(event) => handleOnGuideMouseEvent(event, undefined, undefined)}>
+                        {/* {drawContents.map(content => content)}   */}
                         {/* className="border-2 border-black-500"  */}
                     </div>
                     <canvas id="myCanvas" ref={canvasRef} className="absolute"  ></canvas> 
@@ -581,10 +542,17 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
                     <hr style={{marginTop:"10px"}}/>
                     <div>
                         <label>이미지</label>
-                        <input type="file" id="img" name="img" accept="image/*" onChange={handleOnLoadFile} ref={inputRef}/>
+                        <div  ref={backgroundImageRef}  >
+                            <input type="file" id="img" name="img" accept="image/*" onChange={handleOnLoadFile} />
+                        </div>
                         <p>이미지 크기 조정 <strong className="red">작업중</strong></p>
+                        <img ref={imgRef} className="hidden" alt="Background Image ..." />
                     </div>
 
+                    <hr style={{marginTop:"10px"}}/>
+                    <div  style={{marginTop:"10px"}}> 
+                        <DropDown dropdownTitle="비즈 크기" dropdownClickAction={handleBlockSizeDropdownClick} dropdownOptions={bizs} defaultDropdownValue={10} />
+                    </div>
 
                     { isImageUploaded && <>
                     <hr style={{marginTop:"10px"}}/>
@@ -595,32 +563,37 @@ export default function Editor(  {guideRef} : { guideRef: any | never } ){
                     </div>
                     <hr style={{marginTop:"10px"}}/>
                     <div  style={{marginTop:"10px"}}> 
-                        <button onClick={reset} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 전체지우기 </button>
-                    </div> </>}
-                    
-                    {(drawContents.length > 0 || isImageUploaded) && <>
+                        <button onClick={automaticallyDrawingCanvas1} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 
+                            비즈 생성하기
+                        </button>
+                    </div>
                     <hr style={{marginTop:"10px"}}/>
                     <div  style={{marginTop:"10px"}}> 
-                        <button onClick={handleOnlyBlockGeneration} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 
-                            비즈 { generateOnlyBlocks ? "생성하기" : "지우기" }
-                        </button>
-                    </div></> }
+                        <button onClick={reset} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 전체지우기 </button>
+                    </div> </>}
+
 
                     <hr style={{marginTop:"10px"}}/>
-                    <div className="flex-none flex flex-row justify-between pt-32">
-                        <MyButton onClickFunction={handleOnPrintClick} buttonName="출력하기" />
+                    <div  style={{marginTop:"10px"}}> 
+                        <button onClick={removeBlocks} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 
+                            비즈 지우기
+                        </button>
                     </div>
+
+                    {/* 비즈 { generateOnlyBlocks ? "생성하기" : "지우기" } */}
+
+                    {/* <div className="flex-none flex flex-row justify-between pt-32">
+                        <MyButton onClickFunction={handleOnPrintClick} buttonName="출력하기" />
+                    </div> */}
                     
                 </div>
             </div>
         }
-    
-        <img ref={imgRef} className="hidden" alt="Uploading image" />
-        {/* <PrintGuide drawContents={drawContents} blockWidth={blockWidth} showPrintDiv={showPrintOpt}/> */}
-        { showPrintOpt && <PrintPopUp drawContents={drawContents} blockWidth={blockWidth} showPrintDiv={showPrintOpt} setShowPrintDiv = {setShowPrintOpt} />}
 
+        <div >
+            <input type="text" ref={currentColorRef} />
+        </div>
 
     </div>
 }
-
 
