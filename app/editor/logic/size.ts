@@ -3,7 +3,7 @@ import { predefinedFrames } from "@/app/editor/dictionary/variables";
 export const calculateBackgorundSize = (selectedFrameName : string) => {
     let selectedFrame = predefinedFrames[selectedFrameName ];
 
-    console.log("calculateBackgroundSize", selectedFrame);
+    // console.log("calculateBackgroundSize", selectedFrame);
 
     if(selectedFrame){
         //화면 비율에 따른 가로 세로 그림판 전체 크기 구하기

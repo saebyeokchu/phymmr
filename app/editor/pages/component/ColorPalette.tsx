@@ -1,7 +1,11 @@
-import { predefinedColors } from "@/app/editor/dictionary/variables";
-import { color } from "@/app/editor/dictionary/types";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export default function ColorPalette({handleOnClickColor} : {handleOnClickColor : any}) {
+import { AWS_IMAGE_S3_URL, predefinedColors } from "@/app/editor/dictionary/variables";
+import { color } from "@/app/editor/dictionary/types";
+import { getColorHexByName } from "@/app/editor/dictionary/functions";
+
+export default function ColorPalette({handleOnClickColor, currentColorRef} : {handleOnClickColor : any, currentColorRef : any}) {
+    // console.log(getColorHexByName("black"))
     return(
         <div>
             <label>색깔</label>
@@ -17,8 +21,15 @@ export default function ColorPalette({handleOnClickColor} : {handleOnClickColor 
                     } 
                     </div>
                 )}
-                    
             </div>
+            {currentColorRef.current &&
+                <>
+                <label>현재색깔</label>  
+                <div 
+                    key={`current-color-key-${currentColorRef.current.value}`}
+                    className="colorPallete w-8 h-8 rounded-full border border-slate-400" 
+                    style={{backgroundColor : getColorHexByName(currentColorRef.current.value)}}  />
+                </>}
         </div>
     );
 }

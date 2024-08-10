@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { MyButton } from "@/app/editor/dictionary/templates";
 import { usePrintContext } from "@/app/editor/context/PrintContext";
-import { calculateBackgorundSize } from "../logic/size";
+import { calculateBackgorundSize } from "../../logic/size";
 
 // document.getElementById('drawingDivForPrint')!.innerHTML 
 export default function PrintPopUp({

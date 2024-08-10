@@ -3,11 +3,8 @@
 import { usePathname } from "next/navigation";
 import Header from "./_root/header";
 import Footer from "./_root/footer";
-import EditorPage from "./editor/page";
-import { AlterContextProvider } from "./editor/context/AlterContext";
-import { PrintContextProvider } from "./editor/context/PrintContext";
-import { DragContextProvider } from "./editor/context/DragContex";
 import { Inter } from "next/font/google";
+import RootLayout from "./editor/layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +18,9 @@ children: React.ReactNode;
 
     return (
         router === '/editor' ?
-        <AlterContextProvider>      
-        <PrintContextProvider>
-          <DragContextProvider>
-            <body className={inter.className}>{children}</body>
-          </DragContextProvider>
-        </PrintContextProvider>
-      </AlterContextProvider> :
+        <RootLayout>
+          {children}
+        </RootLayout>:
         <div>
             <Header />
             {children}

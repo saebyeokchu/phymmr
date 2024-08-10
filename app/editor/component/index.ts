@@ -1,5 +1,7 @@
-import Header from "./Header"
+import Header from "./Header";
+import LoadingImage from "./LoadingImage";
 
 export {
-    Header
+    Header,
+    LoadingImage
 }

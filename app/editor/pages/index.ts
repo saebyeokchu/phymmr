@@ -1,5 +1,7 @@
-import Editor from "./editor/page"
+import EditorButtons from "./_editorButtons/page";
+import PrintPopUp from "./_printPopUp";
 
 export {
-    Editor
+    EditorButtons,
+    PrintPopUp
 }

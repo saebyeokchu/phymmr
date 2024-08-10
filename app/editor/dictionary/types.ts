@@ -4,6 +4,15 @@
  * @ 잦은 수정이 없는 타입을 선언합니다.
  */
 
+export enum ImageUploadStatusEnum {
+    wait = 'wait',
+    uploading = 'uploading',
+    uploaded = 'uploaded',
+    done = 'done'
+}
+
+export type ImageUploadStatus = ImageUploadStatusEnum
+
 type thisBiz = {
     width : number,
     height : number
@@ -39,5 +48,6 @@ export type {
     thisColor,
     color,
     frame,
-    rgb
+    rgb,
+    ImageUploadStatus
 }

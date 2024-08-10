@@ -39,6 +39,11 @@ const handleOnPrintClick = () => {
 }
 
 
+const handleOnButtonClick = () => {
+  window.print();
+}
+
+
   return (
     <div className="nav mx-auto flex items-center justify-between p-6">
     <div>
@@ -50,7 +55,7 @@ const handleOnPrintClick = () => {
       { temporaliySaveTime != '' && <div className="flex flex-row">
         <span>
           <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="m16 10 3-3m0 0-3-3m3 3H5v3m3 4-3 3m0 0 3 3m-3-3h14v-3"/>
           </svg>
         </span>
         <span>{temporaliySaveTime}</span>
@@ -70,7 +75,7 @@ const handleOnPrintClick = () => {
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">주문하기</a>
             </li>
             <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOnPrintClick}>출력하기</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOnButtonClick}>출력하기</a>
             </li>
             <li>
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">공유하기</a>
