@@ -7,6 +7,7 @@
 import { color, frame } from "./types";
 
 const AWS_IMAGE_S3_URL : string = "https://deform-gongbae.s3.us-west-2.amazonaws.com";
+const PIXEL_TO_MILLI : number = 0.265;
 
 // const frames : frame[] = [
 //     {
@@ -108,5 +109,6 @@ export {
     bizs,
     predefinedColors,
     predefinedFrames,
-    AWS_IMAGE_S3_URL
+    AWS_IMAGE_S3_URL,
+    PIXEL_TO_MILLI
 }

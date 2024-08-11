@@ -3,10 +3,10 @@ import { MyButton } from "../dictionary/templates";
 import { useAlterContext } from "../context/AlterContext";
 import { turnOnAlter } from "../dictionary/functions";
 import moment from 'moment';
-import { AWS_IMAGE_S3_URL } from "../dictionary/variables";
+import { AWS_IMAGE_S3_URL, PIXEL_TO_MILLI, predefinedFrames } from "../dictionary/variables";
 import { usePrintContext } from "../context/PrintContext";
 
-export default function Header( {guideRef} : { guideRef: any | never }) {
+export default function Header( {guideRef, printRef, printGuideRef, currentBlockLengthRef, currentFrameNameRef} : { guideRef: any | never, printRef : any, printGuideRef : any , currentBlockLengthRef : any, currentFrameNameRef : any}) {
 
   const alter  = useAlterContext();
   const printContext = usePrintContext();
@@ -35,13 +35,39 @@ export default function Header( {guideRef} : { guideRef: any | never }) {
 }
 
 const handleOnPrintClick = () => {
+  //printRef만 출력하기
+  //row - col
+
+  const imageEles : any = document.getElementsByClassName("guideImageElement");
+  const targetEles :any[] = [];
+
+  printGuideRef.current.innerHTML = [];
+  const currentBlockLength : number = currentBlockLengthRef.current.value;
+
+  for(let child of imageEles){
+    const [row, col, color] : [number, number, string] = child.id.split("-");
+      console.log(child)
+  
+      if(row <=  ~~( predefinedFrames[currentFrameNameRef.current.value].width  / currentBlockLength) && col <= ~~( predefinedFrames[currentFrameNameRef.current.value].height  / currentBlockLength)){
+        console.log(child, row, col, color)
+       
+        let printChild : HTMLImageElement = new Image();
+
+        printChild.src = child.src;
+        printChild.style.position = child.style.position;
+        printChild.style.top = child.style.top;
+        printChild.style.left = child.style.left;
+        printChild.style.width = "10mm";
+        printChild.style.height = "10mm";
+        printChild.style.zIndex = "10";
+
+        printGuideRef.current.appendChild(printChild);
+      }
+  }
   printContext.setDoPrint(true);
+  setShowDropdownMenu(false);
 }
 
-
-const handleOnButtonClick = () => {
-  window.print();
-}
 
 
   return (
@@ -75,7 +101,7 @@ const handleOnButtonClick = () => {
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">주문하기</a>
             </li>
             <li>
-              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOnButtonClick}>출력하기</a>
+              <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white" onClick={handleOnPrintClick}>출력하기</a>
             </li>
             <li>
               <a href="#" className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">공유하기</a>

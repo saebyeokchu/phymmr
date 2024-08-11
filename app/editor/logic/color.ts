@@ -1,5 +1,5 @@
-import { predefinedColors } from "@/app/editor/dictionary/variables";
-import { color, rgb } from "@/app/editor/dictionary/types";
+import { predefinedColors } from "../dictionary/variables";
+import { color, rgb } from "../dictionary/types";
 
 function componentToHex(c : number) {
   var hex = c.toString(16);

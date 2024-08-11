@@ -1,4 +1,4 @@
-import { DimBackground } from "@/app/editor/dictionary/templates";
+import { DimBackground } from "../dictionary/templates";
 
 export default function LoadingImage() {
     return (

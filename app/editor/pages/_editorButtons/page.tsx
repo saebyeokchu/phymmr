@@ -2,12 +2,11 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 import { ColorPalette } from "../component";
 
-import { useCanvasContext, useDragContext } from "@/app/editor/context";
+import { useCanvasContext, useDragContext } from "../../context";
 
-import { color, ImageUploadStatusEnum } from "@/app/editor/dictionary/types";
-import { DropDown, MyButton } from "@/app/editor/dictionary/templates";
-import { bizs } from "@/app/editor/dictionary/variables";
-
+import { color, ImageUploadStatusEnum } from "../../dictionary/types";
+import { DropDown, MyButton } from "../../dictionary/templates";
+import { bizs, predefinedFrames } from "../../dictionary/variables";
 
 export default function EditorButtons({
     canvasRef,
@@ -24,7 +23,8 @@ export default function EditorButtons({
     moveImageOnCanvasRef,
     currentImgLocXRef,
     currentImgLocYRef,
-    drawnBlockCountRef
+    drawnBlockCountRef,
+    currentFrameNameRef
 } : {
     canvasRef : any,
     currentColorRef : any,
@@ -40,7 +40,8 @@ export default function EditorButtons({
     moveImageOnCanvasRef : any,
     currentImgLocXRef  : any,
     currentImgLocYRef  : any,
-    drawnBlockCountRef : any
+    drawnBlockCountRef : any,
+    currentFrameNameRef : any
 }){
 
     const canvasContext = useCanvasContext();
@@ -132,9 +133,22 @@ export default function EditorButtons({
 
     const handleBlockSizeDropdownClick = (value : any) => {
         if(window.confirm("비즈크기를 조정하면 현재 저장된 데이터가 모두 삭제됩니다. 진행하시겠습니까?")){
+            const delay : number = currentBlockLengthRef.current.value;
             currentBlockLengthRef.current.value = value;
             canvasContext.setBlockLength(value);
-            createGuideline();
+            reset();
+            currentBlockLengthRef.current.value = value;
+            setTimeout(()=>window.localStorage.removeItem("bizTempSave"),1000);
+            return true;
+        }
+        return false;
+    }
+
+    const handleFrameSizeDropdownClick = (value : any) => {
+        if(window.confirm("용지 크기를 조정하면 현재 저장된 데이터가 모두 삭제됩니다. 진행하시겠습니까?")){
+            currentFrameNameRef.current.value = value;
+            reset();
+            currentFrameNameRef.current.value = value;
             setTimeout(()=>window.localStorage.removeItem("bizTempSave"),1000);
             return true;
         }
@@ -150,7 +164,9 @@ export default function EditorButtons({
             const ctx = canvasRef.current.getContext("2d");
 
             canvasContext.setImageUploadState(ImageUploadStatusEnum.uploading);
+            const delay : number = currentBlockLengthRef.current.value;
             reset();
+            currentBlockLengthRef.current.value = delay;
     
             //draw backgorund 
             imgRef.current.src = URL.createObjectURL(imageData.target.files[0]);
@@ -208,8 +224,8 @@ export default function EditorButtons({
 
         const canvas = canvasRef.current;
         var ctx = canvas.getContext("2d");
-        ctx.clearRect(currentImgLocXRef.current.value,currentImgLocYRef.current.value, canvasRef.current.width, canvasRef.current.height);
-
+        // ctx.clearRect(currentImgLocXRef.current.value,currentImgLocYRef.current.value, canvasRef.current.width, canvasRef.current.height);
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         // canvas.width = newWidth;
         // canvas.height = newHeight;
         ctx.drawImage(imgRef.current,currentImgLocXRef.current.value,currentImgLocYRef.current.value,imgRef.current.style.width.replace("px",""),imgRef.current.style.height.replace("px",""));
@@ -348,6 +364,8 @@ export default function EditorButtons({
 
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         ctx.drawImage(imgRef.current,0,0,imgWidth,imgHeight);
+        currentImgLocXRef.current.value = 0;
+        currentImgLocYRef.current.value = 0;
     }
 
     function handleOnGenerateBlockClick(){
@@ -405,6 +423,11 @@ export default function EditorButtons({
 
             <hr style={{marginTop:"10px"}}/>
             <div  style={{marginTop:"10px"}}> 
+                <DropDown dropdownTitle="용지 설정" dropdownClickAction={handleFrameSizeDropdownClick} dropdownOptions={Object.keys(predefinedFrames)} defaultDropdownValue={"A4"} />
+            </div>
+
+            <hr style={{marginTop:"10px"}}/>
+            <div  style={{marginTop:"10px"}}> 
                 <small>1 px = 0.265 mm로 환산하여 계산</small>
                 <DropDown dropdownTitle="블럭 크기(mm)" dropdownClickAction={handleBlockSizeDropdownClick} dropdownOptions={bizs} defaultDropdownValue={10} />
             </div>
@@ -440,8 +463,7 @@ export default function EditorButtons({
             <div  style={{marginTop:"10epx"}}> 
                 <button onClick={handleOnResetClick} className="text-white bg-blue-700 w-full hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> 전체지우기 </button>
             </div> </>}
-            
-            
+
         {/* </div> */}
         </>
     )

@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/*editor*/
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 #canvas{
     cursor:pointer;
     /* padding :10px; */
@@ -57,23 +52,23 @@
 .colorPallete:hover {
     transform: scale(1.2);
 }
-
+#print-content {
+    /* visibility: hidden; */
+    display:none;
+}
 @media print {
     body {
       visibility: hidden;
     }
     
-    .print-content {
-        width:210mm;
-        height:290mm;
-      display: block;
-      margin-top:50px;
+    #print-content {
       padding : 0;
+      margin:0;
+      display: block;
       visibility: visible;
       position: absolute;
       left: 0;
-      top: 0;
-      transform: scale(1.6) translate(120px, 150px);
+      top: 0; 
     }
   }
 

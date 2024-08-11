@@ -4,23 +4,27 @@ import { Dispatch, MutableRefObject, SetStateAction, useEffect, useRef, useState
 import {
   Header,
   LoadingImage
-} from "@/app/editor/component";
+} from "./component";
 import {
     EditorButtons,
     PrintPopUp
 } from "./pages";
-import { useAlterContext, useCanvasContext, useDragContext } from "./context";
+import { useAlterContext, useCanvasContext, useDragContext, usePrintContext } from "./context";
 
-import { Alter } from "./dictionary/templates";
+import { Alter, MyButton } from "./dictionary/templates";
 import { ImageUploadStatusEnum, rgb } from "./dictionary/types";
-import { AWS_IMAGE_S3_URL, predefinedColors, predefinedFrames } from "./dictionary/variables";
+import { AWS_IMAGE_S3_URL, PIXEL_TO_MILLI, predefinedColors, predefinedFrames } from "./dictionary/variables";
 
 import { findColosestColor, isBlack, isWhite } from "./logic/color";
+import { calculateBackgorundSize } from "./logic/size";
+import ImageSizeTest from "./imageSizeTest";
+import DragTest from "./dragTest";
 import { turnOnAlter } from "./dictionary/functions";
 
 export default function Home() {
     const guideRef : any | never = useRef(undefined);
     const printGuideRef : any  = useRef(undefined);
+    const printRef : any = useRef(undefined);
 
     const alter  = useAlterContext();
     const dragContext = useDragContext();
@@ -38,6 +42,7 @@ export default function Home() {
     const moveImageOnCanvasRef  : any = useRef("move"); //move or lock
     const canvasWrapperRef : any = useRef(undefined);
     const drawnBlockCountRef : any = useRef(undefined);
+    const currentFrameNameRef : any = useRef(undefined);
 
     const basicBlockLength : number = 10;
     const basicFrameName : string = "A4";
@@ -50,28 +55,48 @@ export default function Home() {
     let [ hideImageOnCanvas, setHideImageOnCanvas ] : [boolean, Dispatch<SetStateAction<boolean>> ] = useState(false);
 
     useEffect(()=>{
-        //window.onresize = () => {
-        //     checkWindowSize(); //check window size
+        checkWindowSize();
+        window.onresize = () => {
+            checkWindowSize(); //check window size
         // console.log(canvasRef.current.width, canvasWrapperRef.current.clientWidth);
         //     canvasRef.current.width = canvasWrapperRef.current.clientWidth;
         //     canvasRef.current.height = canvasWrapperRef.current.clientHeight;
-        // }
-
-        drawCanvas();
+        }
         createGuideline();
     }, []);
 
+    useEffect(()=>{
+        if(!blockWindow){
+            createGuideline();
+        }
+    },[blockWindow])
+
     function drawCanvas() {
-        canvasRef.current.width = canvasWrapperRef.current.clientWidth;
-        canvasRef.current.height = canvasWrapperRef.current.clientHeight;
+        const currentBlockLength : number = currentBlockLengthRef.current.value;
+        const blockLengthInput : number = currentBlockLength / PIXEL_TO_MILLI ;
+
+        // canvasRef.current.width = `${blockLengthInput}px`;
+        // canvasRef.current.height = `${blockLengthInput}px`;
+
+        canvasRef.current.width = predefinedFrames[currentFrameNameRef.current.value].width / PIXEL_TO_MILLI;
+        canvasRef.current.height =  predefinedFrames[currentFrameNameRef.current.value].height /  PIXEL_TO_MILLI;
     }
 
     const checkWindowSize = () => {
         setBlockWindow( window.innerHeight < 700 || window.innerWidth < 1000 )
+
+        if(window.innerHeight < 700 || window.innerWidth < 1000 ){
+            setBlockWindow(true);
+        }else{
+            setBlockWindow(false);
+        }
     }
 
     function createGuideline(){
-        const blockLengthInput : number = currentBlockLengthRef.current.value / 0.265 - 5 ;
+        drawCanvas();
+
+        const currentBlockLength : number = currentBlockLengthRef.current.value;
+        const blockLengthInput : number = currentBlockLength / PIXEL_TO_MILLI;
 
         // const [ drawingBackgroundWidth, drawingBackgroundHeight ] = calculateBackgorundSize(selectedFrameName);
         // let selectedFrame = predefinedFrames[selectedFrameName];
@@ -89,26 +114,59 @@ export default function Home() {
 
         //비즈 크기만큼 사각형 생성
         //1 px = 0.265 mm
-        let bizRowCount : number = Math.floor(guideWidth / blockLengthInput);
-        let bizColCount : number =  Math.floor(guideHeight / blockLengthInput);
+        // let bizRowCount : number = Math.floor(guideWidth / blockLengthInput);
+        // let bizColCount : number =  Math.floor(guideHeight / blockLengthInput);
         // let bizWidth : number = Math.floor(drawingBackgroundWidth/bizRowCount);
 
-        guide.style.width = `${canvasWrapperRef.current.clientWidth}px`;
-        guide.style.height = `${ canvasWrapperRef.current.clientHeight}px`;
+        
+        guide.style.width = `${predefinedFrames[currentFrameNameRef.current.value].width  / PIXEL_TO_MILLI}px`;
+        guide.style.height = `${ predefinedFrames[currentFrameNameRef.current.value].height  / PIXEL_TO_MILLI}px`;
+
+        // console.log( 210 / PIXEL_TO_MILLI /  currentBlockLength);
+
+        let bizRowCount : number = ~~( predefinedFrames[currentFrameNameRef.current.value].width  / currentBlockLength);
+        let bizColCount : number =  ~~( predefinedFrames[currentFrameNameRef.current.value].height  / currentBlockLength);
+
         guide.style.gridTemplateColumns = `repeat(${bizRowCount}, ${blockLengthInput}px)`;
         guide.style.gridTemplateRows = `repeat(${bizColCount},  ${blockLengthInput}px)`;
 
+        // printGuideRef.current.style.width = `${canvasWrapperRef.current.clientWidth}px`;
+        // printGuideRef.current.style.height = `${ canvasWrapperRef.current.clientHeight}px`;
+
         // setBlockLength(bizWidth);
         //currentBlockLengthRef.current.value = bizWidth;
-
+ 
         console.log("[bizLength, bizWidth, widthBizNum , heightBizNum , total biz count] : [",
             blockLengthInput, blockLengthInput,  bizRowCount , bizColCount , bizRowCount*bizColCount , "]");
 
         //populate guide so div can display
-        [ ... Array(Math.floor(bizRowCount*bizColCount)) ].forEach(() => guide.insertAdjacentHTML("beforeend","<div draggable='true' class='bizDiv nonSelected'></div>"));
+        let rowIndex : number = 1;
+        let colIndex : number = 1;
+        [ ... Array(Math.floor(bizRowCount*bizColCount)) ].forEach((index) => {
+            if(rowIndex > bizRowCount){
+                rowIndex = 1;
+                colIndex ++;
+
+            }
+
+            if(colIndex > bizColCount){
+                colIndex = 1;
+            }
+            // console.log(rowIndex,"-",colIndex);
+            guide.insertAdjacentHTML("beforeend","<div draggable='true' id='"+rowIndex+"-"+colIndex+"' class='bizDiv nonSelected'></div>");
+
+            rowIndex ++;
+    });
         
         // testDrawEvent(guide);
         addDragAndDrawListenr();
+
+        //draw print guide
+        if(printRef.current != null ) {
+            // A4기준
+            printRef.current.style.width = blockLengthInput * bizRowCount + "px";  
+            printRef.current.style.height = blockLengthInput * bizColCount + "px";
+        }
 
     }
 
@@ -144,13 +202,15 @@ export default function Home() {
 
     function handleOnGuideMouseEvent(mouseEvent : any){
 
+        console.log("[handleOnGuideMouseEvent]")
         if(moveImageOnCanvasRef.current.value ==="lock"){
             turnOnAlter(alter, "이미지 조정하기가 켜져있습니다");
             return;
         }
 
+        const [row, col] : [number, number ] = mouseEvent.target.id.split("-");
         const guide = guideRef.current;
-        const blockWidthInput : number = parseInt(currentBlockLengthRef.current.value) / 0.265;
+        const blockWidthInput : number = parseInt(currentBlockLengthRef.current.value) / 0.265 + 5;
         const colorInput : string = currentColorRef.current.value;
 
         if(guide != null){
@@ -164,19 +224,21 @@ export default function Home() {
             //start point
             const startX = ~~(( (~~(x/(blockWidthInput-5)) * (blockWidthInput-5)))) ;
             const startY = ~~(( (~~(y/(blockWidthInput-5)) * (blockWidthInput-5)))) ;
-            // console.log(`${x} => ${startX}, ${y} => ${startY}`);
+            console.log(`${x} => ${startX}, ${y} => ${startY}`);
             
             //같은 자리에 이미 있는지 찾고, 있으면 삭제하기
             const guideImageElementList : any = document.getElementsByClassName("guideImageElement");
             let targetImgId : string | undefined = undefined;
+
             
             for(let guideImage of guideImageElementList){
                 //src, top, left
                 const thisSrc : string = guideImage.currentSrc;
                 const thisTop : number = parseInt(guideImage.style.top.replace("px",""));
                 const thisLeft : number = parseInt(guideImage.style.left.replace("px",""));
+                console.log(startX, thisLeft, startY, thisTop);
 
-                if(startX === thisLeft && startY === thisTop){
+                if(Math.abs(startX - thisLeft) < 5 && Math.abs(startY - thisTop) < 5){
                     if(thisSrc.search(colorInput) === -1){
                         colorChanged = true;
                     }else{
@@ -188,7 +250,7 @@ export default function Home() {
             }
 
             const imgSrc = `/block/${colorInput}-block.png`;
-            const keyName = `${startX}-${startY}-${colorInput}`;
+            const keyName = `${row}-${col}-${colorInput}`;
             let proceed : boolean = true;
             const dragState : string = currentDragStateRef.current.value;
 
@@ -229,9 +291,10 @@ export default function Home() {
                     drawnBlockCountRef.current.value =  parseInt(drawnBlockCountRef.current.value) + 1;
                 }
 
-                if(printGuideRef.current != null){
-                    printGuideRef.current.innerHTML = guide.innerHTML;
-                }
+                // if(printGuideRef.current != null){
+                //     printGuideRef.current.innerHTML = guide.innerHTML;
+                // }
+               
             }
             
         }
@@ -249,6 +312,8 @@ export default function Home() {
         for(let child of guideRef.current.children){ 
             if(child.className.search('bizDiv') > -1){ // block 부분을 클릭했을때
                 const bcr : DOMRect = child.getBoundingClientRect();
+                const [row, col] : [number, number ] = child.id.split("-");
+
             
                 if(bcr.height == 0 || bcr.width == 0 ){
                     continue;
@@ -293,7 +358,8 @@ export default function Home() {
                 //start point
                 const blockWidthInput : number = parseInt(currentBlockLengthRef.current.value)  / 0.265;
                 const imgSrc = `/block/${colorList[0][0]}-block.png`;
-                const keyName = `${Math.round(x - firstXPosition)}-${Math.round(y-firstYPosition)}-${colorList[0][0]}`;
+                const keyName = `${row}-${col}-${colorList[0][0]}`;
+                // const keyName = `${Math.round(x - firstXPosition)}-${Math.round(y-firstYPosition)}-${colorList[0][0]}`;
 
                 const imgStr : string = "<img id='" + keyName + "'  class=\"guideImageElement\" width=\""+(blockWidthInput)+"\" src='" + imgSrc + "' style='position : absolute;top:"+Math.round(y-firstYPosition)+"px;left:"+Math.round(x - firstXPosition)+"px;z-index:6' />"
                 console.log(keyName);
@@ -324,9 +390,9 @@ export default function Home() {
             }
         }
 
-        if(printGuideRef.current != null){
-            printGuideRef.current.innerHTML = guideRef.current.innerHTML;
-        }
+        // if(printGuideRef.current != null){
+        //     printGuideRef.current.innerHTML = guideRef.current.innerHTML;
+        // }
     }
 
     function addDragAndDrawListenr() {
@@ -342,92 +408,92 @@ export default function Home() {
         })
     }
 
+    const printContext = usePrintContext();
+
 
     return (
         <div> 
-            <div className="flex flex-row hidden">
-                <div className="font-bold text-3xl">2024 08 08 안내내용</div>
+           
+            <PrintPopUp printGuideRef = {printGuideRef} currentBlockLengthRef={currentBlockLengthRef}/>
+
+            <div className="flex flex-row">
+                <div className="font-bold text-3xl">2024 08 12 안내내용</div>
                 <ul className="border-2 border-green-500">
-                <li>drag and draw 기능 완료</li>
-                <li>비즈크기 조정 가능하도록 구현 완료</li>
-                <li>색깔 알고리즘 개선 완료</li>
-                <li>5분마다 임시저장 가능하도록 구현 완료</li>
+                    <li>drag and draw 기능 완료</li>
+                    <li>비즈크기 조정 가능하도록 구현 완료</li>
+                    <li>색깔 알고리즘 개선 완료</li>
+                    <li>5분마다 임시저장 가능하도록 구현 완료</li>
+                    <li>이미지 크기 조절하여 출력 완료</li>
                 </ul>
                 <ul className="border-2 border-red-500">
-                <li>이미지 크기 조절하기 작업중</li>
-                <ul>
-                    <li>프린트 출력시 이미지 크기 조정 이슈 있음</li>
                     <li>출력시 비즈크기 조정하기 관련 추가 구현 필요</li>
-                </ul>
-                </ul>
-                <ul className="border-2 border-red-500">
-                <li>비즈 크기 조정하기 작업중</li>
-                <ul>
                     <li>에디터에서 비즈크기 조정이 가능할때 현재는 이전 작업물이 모두 사라짐</li>
                     <li>현재 그려놓은 작업물을 비즈크기가 변경되어도 가능하게 할때는 추가 구현 필요</li>
                 </ul>
-                </ul>
             </div>
 
-            <Header guideRef={guideRef}/>
+            <Header guideRef={guideRef} printRef={printRef} printGuideRef={printGuideRef} currentBlockLengthRef={currentBlockLengthRef} currentFrameNameRef={currentFrameNameRef}/>
             <div className="nav mx-auto flex items-center p-6">
 
-            { canvasContext.imageUploadState === ImageUploadStatusEnum.uploading && <LoadingImage /> }
+                { canvasContext.imageUploadState === ImageUploadStatusEnum.uploading && <LoadingImage /> }
 
-            { blockWindow ? 
-                    <div>
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-10" aria-hidden="true"></div> 
-                        <Alter message="화면 크기가 너무 작습니다. 화면 크기를 조정해주세요." />
-                    </div> :
-                    <div className="flex w-full flex-row space-x-10" >
-                        <div className="flex w-3/4 h-screen border border-slate-500" id="drawCanvas" ref={canvasWrapperRef}>
-                            <div 
-                                id="guide"
-                                ref={guideRef} 
-                                className="print-content"
-                                onClick={(event) => handleOnGuideMouseEvent(event)}
+                { blockWindow ? 
+                        <div>
+                            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-10" aria-hidden="true"></div> 
+                            <Alter message="화면 크기가 너무 작습니다. 화면 크기를 조정해주세요." />
+                        </div> :
+                        <div className="flex w-full flex-row space-x-10" >
+                            <div className="flex w-3/4 h-screen " id="drawCanvas" ref={canvasWrapperRef}>
+                                <div 
+                                    id="guide"
+                                    ref={guideRef} 
+                                    onClick={(event) => handleOnGuideMouseEvent(event)}
+                                />
+                                <canvas id="canvas" className="border-2 border-red-500 absolute" ref={canvasRef} />
+                            </div>
+                        <div className="grow flex flex-col h-full p-6 border border-slate-500">
+                            <EditorButtons 
+                                canvasRef={canvasRef}
+                                currentColorRef={currentColorRef}
+                                currentBlockLengthRef={currentBlockLengthRef}
+                                backgroundImageRef={backgroundImageRef}
+                                imgRef={imgRef}
+                                setSelectedColorName={setSelectedColorName}
+                                createGuideline={createGuideline}
+                                reset={reset}
+                                automaticDrawing={automaticDrawing}
+                                removeBlocks={removeBlocks}
+                                actionToolRef = {actionToolRef}
+                                moveImageOnCanvasRef = {moveImageOnCanvasRef}
+                                currentImgLocXRef={currentImgLocXRef}
+                                currentImgLocYRef={currentImgLocYRef}
+                                drawnBlockCountRef={drawnBlockCountRef}
+                                currentFrameNameRef={currentFrameNameRef}
+
                             />
-                            <canvas id="canvas" className="border-2 border-red-500 absolute" ref={canvasRef} />
                         </div>
-                    <div className="grow flex flex-col h-full p-6 border border-slate-500">
-                        <EditorButtons 
-                            canvasRef={canvasRef}
-                            currentColorRef={currentColorRef}
-                            currentBlockLengthRef={currentBlockLengthRef}
-                            backgroundImageRef={backgroundImageRef}
-                            imgRef={imgRef}
-                            setSelectedColorName={setSelectedColorName}
-                            createGuideline={createGuideline}
-                            reset={reset}
-                            automaticDrawing={automaticDrawing}
-                            removeBlocks={removeBlocks}
-                            actionToolRef = {actionToolRef}
-                            moveImageOnCanvasRef = {moveImageOnCanvasRef}
-                            currentImgLocXRef={currentImgLocXRef}
-                            currentImgLocYRef={currentImgLocYRef}
-                            drawnBlockCountRef={drawnBlockCountRef}
+                        <div id="editorCanvasInputs" className="hidden">
+                            <input type="text" ref={currentColorRef} defaultValue={basicColorName} />
+                            currentFrameNameRef : <input type="string" ref={currentFrameNameRef} defaultValue={basicFrameName} />
+                            currentBlockLengthRef : <input type="number" ref={currentBlockLengthRef} defaultValue={basicBlockLength} />
+                            <input type="text" ref={currentDragStateRef} defaultValue="" />
+                            <input type="text" ref={actionToolRef}  defaultValue="draw" />
+                            <input type="number" ref={currentImgLocXRef} defaultValue={0}/>
+                            <input type="number" ref={currentImgLocYRef} defaultValue={0}/>
+                            <input type="text" ref={moveImageOnCanvasRef}  defaultValue="move" />
+                            <input type="number" ref={drawnBlockCountRef} defaultValue={0}/>
+                        </div>
 
-                        />
+
                     </div>
-                    <div id="editorCanvasInputs" className="hidden">
-                        <input type="text" ref={currentColorRef} defaultValue={basicColorName} />
-                        currentBlockLengthRef : <input type="number" ref={currentBlockLengthRef} defaultValue={basicBlockLength} />
-                        <input type="text" ref={currentDragStateRef} defaultValue="" />
-                        <input type="text" ref={actionToolRef}  defaultValue="draw" />
-                        <input type="number" ref={currentImgLocXRef} defaultValue={0}/>
-                        <input type="number" ref={currentImgLocYRef} defaultValue={0}/>
-                        <input type="text" ref={moveImageOnCanvasRef}  defaultValue="move" />
-                        <input type="number" ref={drawnBlockCountRef} defaultValue={0}/>
-                    </div>
-
-                    <PrintPopUp printGuideRef = {printGuideRef}/>
-
-                </div>
                 }
             </div>
 
             { alter.turnAlter &&  <Alter message={alter.message}  />  }
+            {/* style={{width:"210mm",height:"290mm"}} */} 
+            <div className={`w-full h-auto relative`} id="print-content"  ref={printGuideRef} ></div>
         </div>
 
   );
 }
+ 

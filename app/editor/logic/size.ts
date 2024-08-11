@@ -1,4 +1,4 @@
-import { predefinedFrames } from "@/app/editor/dictionary/variables";
+import { predefinedFrames } from "../dictionary/variables";
 
 export const calculateBackgorundSize = (selectedFrameName : string) => {
     let selectedFrame = predefinedFrames[selectedFrameName ];

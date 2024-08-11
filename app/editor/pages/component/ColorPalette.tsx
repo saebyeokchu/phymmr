@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
 
-import { AWS_IMAGE_S3_URL, predefinedColors } from "@/app/editor/dictionary/variables";
-import { color } from "@/app/editor/dictionary/types";
-import { getColorHexByName } from "@/app/editor/dictionary/functions";
+import { AWS_IMAGE_S3_URL, predefinedColors } from "../../dictionary/variables";
+import { color } from "../../dictionary/types";
+import { getColorHexByName } from "../../dictionary/functions";
 
 export default function ColorPalette({handleOnClickColor, currentColorRef} : {handleOnClickColor : any, currentColorRef : any}) {
     // console.log(getColorHexByName("black"))
