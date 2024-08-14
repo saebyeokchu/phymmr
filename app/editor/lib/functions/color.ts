@@ -1,5 +1,5 @@
-import { predefinedColors } from "../dictionary/variables";
-import { color, rgb } from "../dictionary/types";
+import { predefinedColors } from "../constant/variables";
+import { color, rgb } from "../constant/types";
 
 function componentToHex(c : number) {
   var hex = c.toString(16);
@@ -67,8 +67,21 @@ function findColosestColor (rgb : rgb, child : any) : string {
     return smallestGapColorName;
 }
 
+function getColorHexByName(name : string){
+  let answer : string = "";
+
+  predefinedColors.map(colors=>colors.map(color=>{
+      if(color.name===name){
+          answer = color.hex;
+      }
+  }));
+
+  return answer
+}
+
 export {
     findColosestColor,
     isBlack,
-    isWhite
+    isWhite,
+    getColorHexByName
 }

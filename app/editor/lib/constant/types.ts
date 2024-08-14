@@ -4,27 +4,25 @@
  * @ 잦은 수정이 없는 타입을 선언합니다.
  */
 
-export enum ImageUploadStatusEnum {
-    wait = 'wait',
-    uploading = 'uploading',
-    uploaded = 'uploaded',
-    done = 'done'
-}
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
-export type ImageUploadStatus = ImageUploadStatusEnum
+type CanvasContextType = {
+    blockLength: number;
+    setBlockLength: Dispatch<SetStateAction<number>>;
+    imageUploadState: string;
+    setImageUploadState: Dispatch<SetStateAction<string>>;
+    drawingState : string;
+    setDrawingState : Dispatch<SetStateAction<string>>;
+    imgXRef : any;
+    imgYRef : any;
+};
 
 type thisBiz = {
     width : number,
     height : number
 }
 
-// type frame = {
-//     name: string,
-//     width : number,
-//     height : number
-// }
-
-type rgb =  {
+type rgba =  {
     r:number,
     g:number,
     b:number,
@@ -44,10 +42,10 @@ interface frame {
  }
  
 export type {
+    CanvasContextType,
     thisBiz,
     thisColor,
     color,
     frame,
-    rgb,
-    ImageUploadStatus
+    rgba
 }

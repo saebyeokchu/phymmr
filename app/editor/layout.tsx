@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { AlterContextProvider } from "./context/AlterContext";
-import { DragContextProvider } from "./context/DragContext";
-import { PrintContextProvider } from "./context/PrintContext";
-import { CanvasContextProvider } from "./context/CanvasContext";
-
-const inter = Inter({ subsets: ["latin"] });
+import {
+  RefContextProvider,
+  PrintContextProvider,
+  DragContextProvider,
+  CanvasContextProvider,
+  AlterContextProvider
+} from './context';
 
 export default function RootLayout({
   children,
@@ -14,15 +13,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AlterContextProvider>
-        <CanvasContextProvider> 
-          <PrintContextProvider>
-            <DragContextProvider>
-              <body className={inter.className}>{children}</body>
-            </DragContextProvider>
-          </PrintContextProvider>
-        </CanvasContextProvider>     
-      </AlterContextProvider>
+      <RefContextProvider>
+        <AlterContextProvider>
+          <CanvasContextProvider> 
+            <PrintContextProvider>
+              <DragContextProvider>
+                <body >{children}</body>
+              </DragContextProvider>
+            </PrintContextProvider>
+          </CanvasContextProvider>     
+        </AlterContextProvider>
+      </RefContextProvider>
 
     </html>
   );

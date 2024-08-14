@@ -1,6 +1,10 @@
-import { DimBackground } from "../dictionary/templates";
+import { DimBackground } from "."
 
-export default function LoadingImage() {
+export default function LoadingImage({
+    loadingText
+} : {
+    loadingText : string
+}) {
     return (
         <>
             <DimBackground  />
@@ -13,7 +17,7 @@ export default function LoadingImage() {
                     <span className="sr-only">Loading...</span>
                 </div>
                 <div>
-                    <span className="text-white font-bold ">이미지를 불러오는 중입니다</span>
+                    <span className="text-white font-bold ">{loadingText}</span>
                 </div>
             </div>
         </>

@@ -22,6 +22,7 @@ const DragContext = createContext<
 export function DragContextProvider({ children }: { children: React.ReactNode }){
     const [ dragStarted, setDragStarted ] : [ boolean , Dispatch<SetStateAction<boolean>>] =  useState( false );
     let dragStatus : string = "";
+    //20240812 다시 보기
     let dragEventRecordSheet : string[] = [];
     let dragColorName : string = "";
 

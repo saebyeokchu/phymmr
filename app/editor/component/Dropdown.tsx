@@ -6,15 +6,9 @@
 
 import { Dispatch, MouseEventHandler, SetStateAction, useState } from "react";
 
-export const MyButton = ({onClickFunction, buttonName} : {onClickFunction : MouseEventHandler<HTMLButtonElement> | undefined, buttonName : string}) => <div>
-    <button onClick={onClickFunction} className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button"> {buttonName} </button>
-</div>
 
-export const Alter =  ( { message } : {message : string} ) => <div className="absolute right-10 bottom-0 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400 z-20" role="alert">
-    <span className="font-medium">{message}</span> 
-</div>
 
-export const DimBackground = ( ) => <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity z-10" aria-hidden="true"></div> 
+
 export function DropDown({
     dropdownTitle,
     dropdownClickAction,
