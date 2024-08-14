@@ -240,13 +240,15 @@ function drawGuidelines(refContext : any, dragContext : any){
     const blockLenRef : any = refContext.blockLenRef;
     const frNmRef : any = refContext.frNmRef;
     const dragStatRef : any = refContext.dragStatRef;
+    const canvasRef : any = refContext.canvasRef;
 
     const guide = guideRef.current;
     const blockLen = blockLenRef.current;
     const frNm = frNmRef.current;
     const dragState = dragStatRef.current;
+    const canvas = canvasRef.current;
 
-    if(guide != null && blockLen != null && frNm != null && dragState != null){
+    if(guide != null && blockLen != null && frNm != null && dragState != null && canvas != null){
         guide.innerHTML = '';
         dragContext.dragEventRecordSheet = [];
 
@@ -257,13 +259,17 @@ function drawGuidelines(refContext : any, dragContext : any){
         
         // guide.style.width = `${frWidth  / PIXEL_TO_MILLI}px`;
         // guide.style.height = `${frHeight  / PIXEL_TO_MILLI}px`;
-        guide.style.width = `${refContext.canvasRef.current.width}px`;
-        guide.style.height = `${refContext.canvasRef.current.height}px`;
+
 
         // console.log( 210 / PIXEL_TO_MILLI /  currentBlockLength);
         //비즈 크기만큼 사각형 생성 1 px = 0.265 mm
         let blockRowCount : number = ~~( frWidth  / currentBlockLengthInMM);
         let blockColCount : number =  ~~( frHeight  / currentBlockLengthInMM);
+
+        canvas.width = ( currentBlockLengthInPixcel ) * blockRowCount ;
+        canvas.height =( currentBlockLengthInPixcel ) * blockColCount ;
+        guide.style.width = `${canvas.width}px`;
+        guide.style.height = `${canvas.height}px`;
 
         guide.style.gridTemplateColumns = `repeat(${blockRowCount}, ${currentBlockLengthInPixcel}px)`;
         guide.style.gridTemplateRows = `repeat(${blockColCount},  ${currentBlockLengthInPixcel}px)`;

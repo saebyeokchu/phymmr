@@ -16,11 +16,8 @@ export default function Paper( {
     const dragContext = useDragContext();
 
     useEffect(()=>{
-        setCanvasSize();
         drawGuidelines(refContext, dragContext);
         addDragEventListner();
-
-        console.log("paper use effect")
     }, []);
     
     // useEffect(()=>{

@@ -262,9 +262,9 @@ export default function Palette(){
         
         if(frNmRef != null){
             if(window.confirm("용지 크기를 조정하면 현재 저장된 데이터가 모두 삭제됩니다. 진행하시겠습니까?")){
-                frNmRef.current.value = value;
                 reset();
                 frNmRef.current.value = value;
+                drawService.drawGuidelines(refContext, dragContext);
                 setTimeout(()=>window.localStorage.removeItem("bizTempSave"),1000);
                 return true;
             }
@@ -277,9 +277,9 @@ export default function Palette(){
         const blockLenRef = refContext.blockLenRef;
 
         if(window.confirm("비즈크기를 조정하면 현재 저장된 데이터가 모두 삭제됩니다. 진행하시겠습니까?")){
-            blockLenRef.current.value = value;
             reset();
             blockLenRef.current.value = value;
+            drawService.drawGuidelines(refContext, dragContext);
             setTimeout(()=>window.localStorage.removeItem("bizTempSave"),1000);
             return true;
         }
