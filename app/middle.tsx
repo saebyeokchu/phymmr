@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "./_root/header";
 import Footer from "./_root/footer";
 import { Inter } from "next/font/google";
+import Alter from "./_root/alter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,7 @@ children: React.ReactNode;
     return (
         <div>
             <Header />
+            <Alter />
             {children}
             <Footer />
         </div>
