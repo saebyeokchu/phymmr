@@ -1,4 +1,5 @@
-import { DimBackground } from "./DimBackground";
+import { DimBackground } from "./dimbackground";
+
 
 export default function Modal() {
     return (

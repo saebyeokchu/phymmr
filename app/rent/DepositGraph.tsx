@@ -1,4 +1,4 @@
-import { DimBackground } from "../component";
+import { DimBackground } from "../component/dimbackground";
 import { getThousandComma } from "../library/Common";
 
 const CompensationItem = [
