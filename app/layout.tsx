@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Middle from "./middle";
+import { AlterContextProvider } from "./context/AlterContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,10 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-white`}>
-        <Middle> 
-          {children}
-        </Middle>
+      <body className={`${inter.className} bg-black flex justify-center`}>
+          <AlterContextProvider>
+            <Middle> 
+              {children}
+            </Middle>
+          </AlterContextProvider>
       </body>
     </html>
   );
