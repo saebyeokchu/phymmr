@@ -51,8 +51,8 @@ export default function DepositGraph({
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-200 dark:divide-neutral-700">
-                        { CompensationItem.map(item => 
-                          <tr>
+                        { CompensationItem.map((item : any, index : number) => 
+                          <tr key={`item-${index}`}>
                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-neutral-200">
                               <div>
                                 <span>{item.name}</span>
