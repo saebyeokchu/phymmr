@@ -23,7 +23,7 @@ export default function Rooms() {
       }
     
     return (
-        <div className="mt-5 py-5 mb-5 rounded-md">
+        <div className="mt-5 py-5 rounded-md">
             <div className="w-full text-center text-xl font-bold">방 둘러보기</div>
 
             <div className={`flex space-x-2 mt-4 ${CenterClassName}`}>

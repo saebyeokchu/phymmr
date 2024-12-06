@@ -3,10 +3,10 @@ os: linux
 # 폴더경로는 원하는 곳에 하시면 됩니다. 꼭  /usr/share/nginx/html/안에 들어가지 않아도 됩니다.
 files:
   - source: /
-    destination: /home/ec2-user/meomureum-next/
+    destination: /home/ec2-user/phymmr/
     overwrite: yes
 permissions:
-  - object: /home/ec2-user/meomureum-next/
+  - object: /home/ec2-user/phymmr/
     owner: root
     group: root
     mode: 755
