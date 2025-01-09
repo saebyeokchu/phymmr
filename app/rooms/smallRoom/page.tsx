@@ -51,18 +51,12 @@ export const Room2Image = () => <div className="flex flex-col overflow-hidden">
                         <img className="rounded-md object-cover h-96" src={`/room2/full1.jpg`} />
                     </div>
                 </div>
-                {/* <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
+                <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
                     <FilledBadge name={"수납"} />
                     <div className={`mt-4 grow flex ${CenterClassName} `}>
-                        <img className="rounded-md object-cover h-96" src={`/room2/full5.png`} />
+                        <img className="rounded-md object-cover h-96" src={`/room2/closet.jpg`} />
                     </div>
-                    <div className={`mt-4 grow flex ${CenterClassName} `}>
-                        <img className="rounded-md object-cover h-96" src={`/room2/light.png`} />
-                    </div>
-                    <div className={`mt-4 grow flex ${CenterClassName} `}>
-                        <img className="rounded-md object-cover h-96" src={`/room2/open_closet.png`} />
-                    </div>
-                </div> */}
+                </div>
             </div>
 
 const Review = () => <div className="relative overflow-hidden">
