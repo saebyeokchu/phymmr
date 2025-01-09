@@ -98,10 +98,12 @@ const Review = () => <div className="relative overflow-hidden">
 
 export default function BigRoom(){
     return(
-        <Wrapper children={<div>
+        <Wrapper roomType={RoomType.Room1}>
+          <div>
                             <Room1PriceChart />
                             <Review />
                             <Room1Image />
-                           </div>} roomType={RoomType.Room1} />
+                           </div>
+        </Wrapper>
     )
 }

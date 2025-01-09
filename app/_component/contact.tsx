@@ -22,7 +22,7 @@ export default function Contact(){
                 </div>
 
                 <div className="mt-5 max-w-3xl">
-                <p className="text-lg text-gray-600 dark:text-neutral-400">
+                <p className="text-lg text-gray-600">
                     현재 카카오톡 문의하기를 통해 입실신청이 가능합니다.
                 </p>
                 </div>

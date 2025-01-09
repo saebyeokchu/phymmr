@@ -10,7 +10,7 @@ const BannerNotice = ({
     actionLink : string
 }) => {
     return (
-        <div className="flex flex-col p-4 mb-4 text-sm  text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+        <div className="flex flex-col p-4 mb-4 text-sm  text-green-800 rounded-lg bg-green-50" role="alert">
             <div>
                 <span className="text-lg font-bold">{title}</span> 
                 <span> {message} </span>

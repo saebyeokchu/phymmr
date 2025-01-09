@@ -9,6 +9,6 @@ import Wrapper from "./_component/Wrapper";
 export default function Rooms() {
 
     return (
-        <Wrapper children={undefined} roomType={RoomType.All} />
+        <Wrapper roomType={RoomType.All} >{undefined}</Wrapper>
     )
 }

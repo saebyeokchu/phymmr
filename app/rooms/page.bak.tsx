@@ -36,8 +36,8 @@ export default function Rooms() {
             </div>
 
             <div className="relative overflow-x-auto mx-9 mt-4">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
                             <th scope="col" className="px-6 py-3"></th>
                             <th scope="col" className="px-6 py-3">단기거주</th>
@@ -45,15 +45,15 @@ export default function Rooms() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <tr className="bg-white border-b">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  ">
                                 보증금
                             </th>
                             <td>30만원</td>
                             <td>{ galleryRoomType === RoomType.Room1 ? "86만원" : "64만원" }</td>
                         </tr>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <tr className="bg-white border-b">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  ">
                                 사용료
                             </th>
                             <td>{ galleryRoomType === RoomType.Room1 ? "1주 15만원" : "1주 10만원" }</td>
@@ -67,7 +67,7 @@ export default function Rooms() {
             <div className="flex overflow-hidden">
                 {/* left arraow */}
                 <div className="flex-none pt-40 cursor-pointer" onClick={previousRoomImg}>
-                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-gray-800  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
                     </svg>
                 </div>
@@ -76,7 +76,7 @@ export default function Rooms() {
                 </div>
                 {/* right arraow */}
                 <div className="flex-none pt-40  cursor-pointer" onClick={nextRoomImg}>
-                    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 text-gray-800  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
                     </svg>
                 </div>

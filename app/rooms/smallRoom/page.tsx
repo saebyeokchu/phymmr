@@ -4,8 +4,8 @@ import { FilledBadge } from "@/app/_component/badge";
 import { CenterClassName } from "@/app/_data/Consts";
 
 export const Room2PriceChart = () => <div className="relative overflow-x-auto mx-9 mt-4">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
                         <tr>
                             <th scope="col" className="px-6 py-3"></th>
                             <th scope="col" className="px-6 py-3">단기거주</th>
@@ -13,15 +13,15 @@ export const Room2PriceChart = () => <div className="relative overflow-x-auto mx
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <tr className="bg-white border-b ">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  ">
                                 보증금
                             </th>
                             <td>30만원</td>
                             <td>70만원</td>
                         </tr>
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <tr className="bg-white border-b">
+                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  ">
                                 사용료
                             </th>
                             <td>1주 10만원</td>
@@ -96,10 +96,12 @@ const Review = () => <div className="relative overflow-hidden">
 
 export default function SmallRoom(){
     return(
-        <Wrapper children={<div>
-                                <Room2PriceChart />
-                                <Review />
-                                <Room2Image />
-                            </div>} roomType={RoomType.Room2} />
+        <Wrapper roomType={RoomType.Room2}>
+          <div>
+            <Room2PriceChart />
+            <Review />
+            <Room2Image />
+          </div>
+        </Wrapper>
     ) 
 }
