@@ -2,10 +2,10 @@
 
 import { usePathname } from "next/navigation";
 import { Inter } from "next/font/google";
-import { Header, Footer, BannerNotice } from "./component";
-import { useAlterContext } from "./context/AlterContext";
+import { Header, Footer, BannerNotice } from "./_component";
+import { useAlterContext } from "./_context/AlterContext";
 import { useEffect } from "react";
-import { KakaoLink } from "./library/Consts";
+import { KakaoLink } from "./_data/Consts";
 
 
 

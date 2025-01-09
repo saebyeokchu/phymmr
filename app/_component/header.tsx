@@ -10,10 +10,11 @@ import axios from 'axios';
 
 const Menus = [
     { name : '포항역 머무름 쉐어하우스', link : '/', classes:''},
+    { name : '공용공간 둘러보기', link : '/sharedspace', classes:''},
     { name : '방 둘러보기', link : '/rooms', classes:''},
     { name : '입실 문의하기', link : '/apply', classes:''},
     { name : '입실/퇴실절차 알아보기(준비중)', link : '/rent', classes:'pointer-events-none bg-slate-100'},
-    { name : '고객센터(준비중)', link : '/qna', classes:'pointer-events-none bg-slate-100'}
+    { name : '고객센터', link : '/qna', classes:''}
 ]
 
 export default function Header() {

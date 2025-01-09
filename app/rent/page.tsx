@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { FilledBadge, OutlineBadge } from "../component/badge"
-import { CenterClassName } from "../library/Consts"
-import { GusestState } from "../library/Enums"
+import { FilledBadge, OutlineBadge } from "../_component/badge"
+import { CenterClassName } from "../_data/Consts"
+import { GusestState } from "../_data/Enums"
 import DepositGraph from "./DepositGraph"
 
 const CheckIn = () => <div className="mt-5 rounded-md p-3">

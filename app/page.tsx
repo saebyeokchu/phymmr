@@ -4,10 +4,13 @@ import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import moment from "moment";
 
-import { Badge, Modal } from "./component";
-import { RoomType } from "./library/Enums";
-import { CenterClassName, MateNum, OpenDate } from "./library/Consts";
-import { FilledBadge, OutlineBadge } from "./component/badge";
+import { Badge, Modal } from "./_component";
+import { RoomType } from "./_data/Enums";
+import { CenterClassName, MateNum, OpenDate } from "./_data/Consts";
+import { FilledBadge, OutlineBadge } from "./_component/badge";
+import Contact from "./_component/contact";
+import {  Room1Image, Room1PriceChart } from "./rooms/bigRoom/page";
+import { Room2Image, Room2PriceChart } from "./rooms/smallRoom/page";
 
 export default function Home() {
   const [index, setIndex] = React.useState(0);
@@ -57,6 +60,7 @@ export default function Home() {
   }
 
   return (
+    <>
     <div className="w-full bg-white mx-auto px-4 sm:px-6 lg:px-8">
       {/* home first section */}
       <div className="text-sm bg-slate-100 p-4">
@@ -152,22 +156,17 @@ export default function Home() {
             <FilledBadge cnProps="cursor-pointer" name={"2번방"} /> 
             : <OutlineBadge onClickFunction={()=>setGalleryRoomType(RoomType.Room2)} cnProps="cursor-pointer" name={"2번방"} />}
         </div>
-        <div className="flex overflow-hidden">
-          {/* left arraow */}
-          <div className="flex-none pt-40 cursor-pointer" onClick={previousRoomImg}>
-            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m15 19-7-7 7-7"/>
-            </svg>
-          </div>
-          <div className={`mt-4 grow flex ${CenterClassName} `}>
-            <img className="rounded-md object-cover h-96" src={`/room${galleryRoomType === RoomType.Room1? "1" : "2"}/full${roomPhotoNum}.jpg`} />
-          </div>
-          {/* right arraow */}
-          <div className="flex-none pt-40  cursor-pointer" onClick={nextRoomImg}>
-            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7"/>
-            </svg>
-          </div>
+        <div className="flex flex-col overflow-hidden">
+          { galleryRoomType === RoomType.Room1 ? 
+              <>
+                <Room1PriceChart />
+                <Room1Image />
+              </> :
+              <>
+                <Room2PriceChart />
+                <Room2Image />
+              </>
+          }
         </div>
       </div>
       {/* home fourth section */}
@@ -190,9 +189,9 @@ export default function Home() {
           </a>
       </div>
       {/* home fifth section */}
-      <hr />
-      <div >
-      </div>
     </div>
+    <Contact />
+    </>
+    
   );
 }

@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Middle from "./middle";
-import { AlterContextProvider } from "./context/AlterContext";
+import { AlterContextProvider } from "./_context/AlterContext";
+import PrelineScript from "./_component/PrelineScript";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
             </Middle>
           </AlterContextProvider>
       </body>
+      <PrelineScript />
     </html>
   );
 }
