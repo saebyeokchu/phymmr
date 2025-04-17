@@ -1,4 +1,3 @@
-import { KakaoLink } from "../_data/Consts";
 
 export default function Contact(){
     return(
@@ -17,23 +16,23 @@ export default function Contact(){
 
                 <div className="mt-5 max-w-2xl">
                 <h1 className="block font-semibold text-gray-800 text-3xl ">
-                    빠르게 입실문의하기
+                    빠르게 입실신청하기
                 </h1>
                 </div>
 
                 <div className="mt-5 max-w-3xl">
                 <p className="text-lg text-gray-600">
-                    현재 카카오톡 문의하기를 통해 입실신청이 가능합니다.
+                    {/* 현재 카카오톡 문의하기를 통해 입실신청이 가능합니다. */}
                 </p>
                 </div>
 
-                <div className="mt-8 gap-3 flex justify-center">
-                <a className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-yellow-600 text-white hover:bg-yellow-700 focus:outline-none focus:bg-yellow-700 disabled:opacity-50 disabled:pointer-events-none" href={KakaoLink}>
-                    카카오톡 문의하기
-                    <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" strokeLinecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                </a>
-                
+                <div className="mt-5 gap-3 flex justify-center">
+                    <a className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-yellow-600 text-white hover:bg-yellow-700 focus:outline-none focus:bg-yellow-700 disabled:opacity-50 disabled:pointer-events-none" href={"/book"}>
+                        온라인 입실신청하기
+                        <svg className="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </a>
                 </div>
+                {/* <a className="text-sm hover:underline text-slate-500" href="/request/tour">오프라인 투어가 필요해요</a> */}
             </div>
             </div>
         </div>

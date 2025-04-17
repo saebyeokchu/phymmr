@@ -7,6 +7,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import axios from 'axios';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { AdminKakaoId } from '../_data/Consts';
 
 const Menus = [
     { name : '포항역 머무름 쉐어하우스', link : '/', classes:''},
@@ -21,20 +23,22 @@ export default function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
 
-    useEffect(()=>{
-        console.log(
-            localStorage.getItem("userId"),
-            localStorage.getItem("userName"),
-            localStorage.getItem("userToken") 
-        );
+    const searchParams = useSearchParams();
 
+    useEffect(()=>{
         const token = localStorage.getItem("userToken") ;
         if(token){
             setLoggedIn(true);
         }else{
-            setLoggedIn(false);
+            const kakaoCode = searchParams.get('code');
+
+            if(kakaoCode){
+                getToken(kakaoCode);
+            }else{
+                setLoggedIn(false);
+            }
         }
-    })
+    },[]);
 
     const onLoginClick = (event : any) => {
         event.preventDefault();
@@ -68,6 +72,7 @@ export default function Header() {
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
             },
         });
+        console.log("[getUserData]",user);
         //kakao id, room number, 입실날짜
         localStorage.setItem("userId",user.data.id)
         localStorage.setItem("userName",user.data.properties.nickname);
@@ -160,9 +165,9 @@ export default function Header() {
                                     { !loggedIn && <a
                                         href="/"
                                         onClick={onLoginClick}
-                                        className="pointer-events-none bg-slate-100 -mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
+                                        className=" -mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
                                         >
-                                            로그인(준비중)
+                                            로그인
                                         </a> }
                                     {loggedIn &&  <a
                                         href="/mypage"
@@ -170,11 +175,19 @@ export default function Header() {
                                         >
                                             마이페이지(준비중)
                                         </a>}
+                                    {loggedIn && localStorage.getItem("userId") && localStorage.getItem("userId") == AdminKakaoId &&
+                                        <a
+                                        href="/admin"
+                                        className=" -mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
+                                        >
+                                            관리자페이지
+                                        </a>
+                                    }
                                     {loggedIn &&  <a
                                         onClick={onLogOutClick}
-                                        className=" pointer-events-none bg-slate-100 -mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
+                                        className=" -mx-3 block rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
                                         >
-                                            로그아웃(준비중)
+                                            로그아웃
                                         </a>}
                                     </div>
                             </div>

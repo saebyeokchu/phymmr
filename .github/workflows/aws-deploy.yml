@@ -1,44 +1,50 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+# # This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# # For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+# temporaily disable this workflow until we can get the docker image to build and deploy correctly 20250417
+# name: Deploy phymmr
 
-name: Deploy phymmr
-
-on:
-  push:
-    branches:
-      - master
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name : checkout source code
-        uses : actions/checkout@v4
-      - name: Check Node v
-        run: node -v
-      - name: Install Dependencies
-        run: npm install
-      - name: Build
-        run: npm run build
-      - name: zip create 
-        run: zip -qq -r ./phymmr.zip ./.next/ ./appspec.yml ./deploy.sh ./public
-        shell: bash
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Upload to S3 
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp --region us-east-1 ./phymmr.zip s3://phymmr-deploy/phymmr.zip
-      - name: Deploy # Deploy to EC2
-        run: aws deploy create-deployment
-          --application-name phymmr
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --file-exists-behavior OVERWRITE
-          --deployment-group-name Github-deploy
-          --s3-location bucket=phymmr-deploy,key=phymmr.zip,bundleType=zip
+# on:
+#   push:
+#     branches:
+#       - master
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name : checkout source code
+#         uses : actions/checkout@v4
+#       - name: Check Node v
+#         run: node -v
+#       - name: Install Dependencies
+#         run: npm install
+#       - name: Build
+#         run: npm run build
+#       - name: Build Docker Image
+#         run: docker build -t cuu2253/phymmr:latest .
+#       - name: Push Docker Image
+#         run: |
+#           docker login -u cuu2253 -p ${{ secrets.DOCKER_HUB_TOKEN }}
+#           docker push cuu2253/phymmr:latest
+#       - name: zip create 
+#         run: zip -qq -r ./phymmr.zip ./.next/ ./appspec.yml ./deploy.sh ./public
+#         shell: bash
+#       - name: Configure AWS credentials
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+#           aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+#           aws-region: ${{ secrets.AWS_REGION }}
+#       - name: Upload to S3 
+#         env:
+#           AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+#           AWS_SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
+#         run: |
+#           aws s3 cp --region us-east-1 ./phymmr.zip s3://phymmr-deploy/phymmr.zip
+#       - name: Deploy # Deploy to EC2
+#         run: aws deploy create-deployment
+#           --application-name phymmr
+#           --deployment-config-name CodeDeployDefault.AllAtOnce
+#           --file-exists-behavior OVERWRITE
+#           --deployment-group-name Github-deploy
+#           --s3-location bucket=phymmr-deploy,key=phymmr.zip,bundleType=zip
 

@@ -1,4 +1,4 @@
-const BannerNotice = ({
+const Banner = ({
     title,
     message,
     actionMessage,
@@ -23,5 +23,5 @@ const BannerNotice = ({
 }
 
 export {
-    BannerNotice
+    Banner
 }

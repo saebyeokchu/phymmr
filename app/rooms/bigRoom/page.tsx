@@ -1,7 +1,5 @@
-import { RoomType } from "@/app/_data/Enums";
+import { RoomType } from "@/data/Enums";
 import Wrapper from "../_component/Wrapper";
-import { CenterClassName } from "@/app/_data/Consts";
-import { FilledBadge } from "@/app/_component/badge";
 
 export const Room1PriceChart = () => <div className="relative overflow-x-auto mx-9 mt-4">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">

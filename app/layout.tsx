@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Middle from "./middle";
-import { AlterContextProvider } from "./_context/AlterContext";
-import PrelineScript from "./_component/PrelineScript";
+import ContextProviders from "@/context/ContextProviders";
+import { PrelineScript } from "@/component/layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/setting/fav.ico" sizes="any" />
+      </head>
       <body className={`${inter.className} bg-black flex justify-center`}>
-          <AlterContextProvider>
+          <ContextProviders>
             <Middle> 
               {children}
             </Middle>
-          </AlterContextProvider>
+          </ContextProviders>
       </body>
       <PrelineScript />
     </html>

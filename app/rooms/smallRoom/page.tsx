@@ -1,7 +1,7 @@
-import { RoomType } from "@/app/_data/Enums";
+import { RoomType } from "@/data/Enums";
 import Wrapper from "../_component/Wrapper";
-import { FilledBadge } from "@/app/_component/badge";
-import { CenterClassName } from "@/app/_data/Consts";
+import { CenterClassName } from "@/data/Consts";
+import { Badge } from "@/component/ui";
 
 export const Room2PriceChart = () => <div className="relative overflow-x-auto mx-9 mt-4">
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500 ">
@@ -34,7 +34,7 @@ export const Room2PriceChart = () => <div className="relative overflow-x-auto mx
 
 export const Room2Image = () => <div className="flex flex-col overflow-hidden">
                 <div className={`mt-4 grow flex flex-col ${CenterClassName} `}>
-                    <FilledBadge name={"책상"} />
+                    <Badge.Filled name={"책상"} />
                     <div className={`mt-4 grow flex ${CenterClassName} `}>
                         <img className="rounded-md object-cover h-96" src={`/room2/full3.jpg`} />
                     </div>
@@ -43,7 +43,7 @@ export const Room2Image = () => <div className="flex flex-col overflow-hidden">
                     </div>
                 </div>
                 <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                    <FilledBadge name={"침대"} />
+                    <Badge.Filled  name={"침대"} />
                     <div className={`mt-4 grow flex ${CenterClassName} `}>
                         <img className="rounded-md object-cover h-96" src={`/room2/full4.jpg`} />
                     </div>
@@ -52,7 +52,7 @@ export const Room2Image = () => <div className="flex flex-col overflow-hidden">
                     </div>
                 </div>
                 <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                    <FilledBadge name={"수납"} />
+                    <Badge.Filled  name={"수납"} />
                     <div className={`mt-4 grow flex ${CenterClassName} `}>
                         <img className="rounded-md object-cover h-96" src={`/room2/closet.jpg`} />
                     </div>

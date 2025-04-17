@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { FilledBadge, OutlineBadge } from "../_component/badge"
-import { CenterClassName } from "../_data/Consts"
-import { GusestState } from "../_data/Enums"
+import { GusestState } from "../../data/Enums"
 import DepositGraph from "./DepositGraph"
+import { CenterClassName } from "@/data/Consts"
+import { Badge } from "@/component/ui"
 
 const CheckIn = () => <div className="mt-5 rounded-md p-3">
     <div className="pt-3 h-full text-center justify-center items-center content-center place-items-center justify-items-center self-center place-content-center">
@@ -177,11 +177,11 @@ export default function Rent(){
         <div className="px-3 py-3">
             <div className={`flex space-x-2 ${CenterClassName}`}>
                 { questionType === GusestState.checkin ? 
-                    <FilledBadge cnProps="cursor-pointer" name={"입실절차"} /> : 
-                    <OutlineBadge onClickFunction={()=>setQuestionType(GusestState.checkin)} cnProps="cursor-pointer" name={"입실절차"} />}
+                    <Badge.Filled cnProps="cursor-pointer" name={"입실절차"} /> : 
+                    <Badge.Outline onClickFunction={()=>setQuestionType(GusestState.checkin)} cnProps="cursor-pointer" name={"입실절차"} />}
                 { questionType === GusestState.checkout ? 
-                <FilledBadge cnProps="cursor-pointer" name={"퇴실절차"} /> 
-                : <OutlineBadge onClickFunction={()=>setQuestionType(GusestState.checkout)} cnProps="cursor-pointer" name={"퇴실절차"} />}
+                <Badge.Filled cnProps="cursor-pointer" name={"퇴실절차"} /> 
+                : <Badge.Outline onClickFunction={()=>setQuestionType(GusestState.checkout)} cnProps="cursor-pointer" name={"퇴실절차"} />}
             </div>
 
             <div>

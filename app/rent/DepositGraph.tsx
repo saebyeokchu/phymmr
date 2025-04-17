@@ -1,5 +1,5 @@
 import { DimBackground } from "../_component/dimbackground";
-import { getThousandComma } from "../_data/Common";
+import { getThousandComma } from "../../data/Common";
 
 const CompensationItem = [
   { name : '배게' , price : 20000 },

@@ -1,5 +1,5 @@
-import { FilledBadge } from "../_component/badge";
-import { CenterClassName } from "../_data/Consts";
+import { Badge } from "@/component/ui";
+import { CenterClassName } from "@/data/Consts";
 
 export default function SharedSpace(){
     return(
@@ -10,7 +10,7 @@ export default function SharedSpace(){
                 <p className="text-sm text-gray-600 pt-1 pb-3">공용공간인만큼 생활 소음이 있을 수 있으니 이 점을 꼭 고려하여 주세요.</p>
             </div>
             <div className={`mt-4 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"거실"} />
+                <Badge.Filled name={"거실"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/livingroom4.jpeg`} />
                 </div>
@@ -28,7 +28,7 @@ export default function SharedSpace(){
                 </div>
             </div>
             <div className={`mt-4 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"주방"} />
+                <Badge.Filled name={"주방"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/kitchen1.jpg`} />
                 </div>
@@ -40,7 +40,7 @@ export default function SharedSpace(){
                 </div>
             </div>
             <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"화장실"} />
+                <Badge.Filled name={"화장실"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/bath1.jpg`} />
                 </div>
@@ -52,19 +52,19 @@ export default function SharedSpace(){
                 </div>
             </div>
             <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"세탁실"} />
+                <Badge.Filled name={"세탁실"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/laundry.jpg`} />
                 </div>
             </div>
             <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"분리수거함"} />
+                <Badge.Filled name={"분리수거함"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/trashzone.jpeg`} />
                 </div>
             </div>
             <div className={`mt-10 grow flex flex-col ${CenterClassName} `}>
-                <FilledBadge name={"기타 공용공간"} />
+                <Badge.Filled name={"기타 공용공간"} />
                 <div className={`mt-4 grow flex ${CenterClassName} `}>
                     <img className="rounded-md object-cover h-96" src={`/shared/sleeper.jpeg`} />
                 </div>
